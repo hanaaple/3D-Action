@@ -286,7 +286,7 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: e1c1f8944d542d04c8c9f2c6a731f1c3,
         type: 3}
       propertyPath: m_Name
-      value: 22222
+      value: Y Bot
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: e1c1f8944d542d04c8c9f2c6a731f1c3,
         type: 3}
@@ -495,6 +495,7 @@ MonoBehaviour:
   move: {x: 0, y: 0}
   look: {x: 0, y: 0}
   roll: 0
+  jump: 0
   run: 0
   crouch: 0
   lockOnOff: 0
@@ -576,6 +577,7 @@ MonoBehaviour:
   rotationSmoothTime: 0.12
   speedChangeRate: 10
   rollingAudioClip: {fileID: 8300000, guid: abb2a03352eace947b5a944861375695, type: 3}
+  landingAudioClip: {fileID: 8300000, guid: ff697d3070687ce4583faa0561a145a2, type: 3}
   footstepAudioClips:
   - {fileID: 8300000, guid: 72f526a6a9890f643a88e85a61c86c8a, type: 3}
   - {fileID: 8300000, guid: 85016e0f2b01da248b9663dd49a161b0, type: 3}
@@ -589,12 +591,14 @@ MonoBehaviour:
   - {fileID: 8300000, guid: a3194b8bbc96ef84fab1f98f4b7dae3e, type: 3}
   footstepAudioVolume: 0.5
   rollingAudioVolume: 0.3
+  landingAudioVolume: 0.5
   rollSpeed: 6
-  rollHeight: 1.02
   rollMotionSpeed: 1.5
-  rollThreshold: 0.5
-  fallThreshold: 0.15
+  rollThreshold: 0
+  jumpHeight: 1.2
+  jumpThreshold: 0.2
   gravity: -15
+  fallThreshold: 0.15
   isGrounded: 0
   groundedOffset: -0.14
   groundedRadius: 0.28

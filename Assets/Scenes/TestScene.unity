@@ -772,6 +772,21 @@ PrefabInstance:
       propertyPath: m_Name
       value: Y Bot
       objectReference: {fileID: 0}
+    - target: {fileID: 5223591541797045378, guid: 5f6e165f06373ba49a6558bb955fceed,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5223591541797045378, guid: 5f6e165f06373ba49a6558bb955fceed,
+        type: 3}
+      propertyPath: jumpThreshold
+      value: 0.2
+      objectReference: {fileID: 0}
+    - target: {fileID: 5223591541797045378, guid: 5f6e165f06373ba49a6558bb955fceed,
+        type: 3}
+      propertyPath: rollThreshold
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
