@@ -14,9 +14,11 @@ namespace CharacterControl
 
         [Header("Audio")]
         [SerializeField] private AudioClip rollingAudioClip;
+        [SerializeField] private AudioClip landingAudioClip;
         [SerializeField] private AudioClip[] footstepAudioClips;
         [Range(0, 1)] [SerializeField] private float footstepAudioVolume = 0.5f;
         [Range(0, 1)] [SerializeField] private float rollingAudioVolume = 0.5f;
+        [Range(0, 1)] [SerializeField] private float landingAudioVolume = 0.5f;
 
         [Header("Roll")]
         [SerializeField] private float rollSpeed = 5f;
@@ -301,6 +303,13 @@ namespace CharacterControl
         {
             if (animationEvent.animatorClipInfo.weight < 0.5f) return;
             AudioSource.PlayClipAtPoint(rollingAudioClip, transform.position, rollingAudioVolume);
+        }
+
+        // this work by animation event
+        private void OnLand(AnimationEvent animationEvent)
+        {
+            if (animationEvent.animatorClipInfo.weight < 0.5f) return;
+            AudioSource.PlayClipAtPoint(landingAudioClip, transform.position, landingAudioVolume);
         }
 
         public float GetMoveSpeed()
