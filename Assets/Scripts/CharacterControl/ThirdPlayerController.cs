@@ -20,18 +20,17 @@ namespace CharacterControl
 
         [Header("Roll")]
         [SerializeField] private float rollSpeed = 5f;
-        [SerializeField] private float rollHeight = 1.02f;
         [SerializeField] private float rollMotionSpeed = 1f;
-    
-        [Space(10)]
-        [SerializeField] private float rollThreshold = 0.50f;
-        [SerializeField] private float fallThreshold = 0.15f;
-    
+        [SerializeField] private float rollThreshold = 0f;
+
+        [Header("Jump")]
+        [SerializeField] private float jumpHeight = 1.2f;
+        [SerializeField] private float jumpThreshold = 0.2f;
+
         [Header("Gravity")]
-        // [SerializeField] private float jumpHeight = 1.2f;
         [SerializeField] private float gravity = -15.0f;
-    
-    
+        [SerializeField] private float fallThreshold = 0.15f;
+
         [Header("Player Grounded")]
         [SerializeField] private bool isGrounded;
         [SerializeField] private float groundedOffset = -0.14f;
@@ -40,6 +39,7 @@ namespace CharacterControl
 
         [Header("Cinemachine")]
         [SerializeField] private GameObject cinemachineCameraTarget;
+
         [SerializeField] private float topClamp = 70.0f;
         [SerializeField] private float bottomClamp = -30.0f;
         [Range(0.1f, 20)] [SerializeField] private float xAxisSensitivity = 1f;
@@ -51,15 +51,17 @@ namespace CharacterControl
         private float _cameraTargetYAxis;
         private float _cameraTargetXAxis;
 
-
         private float _moveSpeed;
         private float _verticalVelocity;
         private float _rotationVelocity;
         private float _animationBlend;
         private float _targetRotation;
-        
-        // timeout deltaTime
+
+        // Time after landing when the action cannot be performed
+        private float _jumpTimeoutDelta;
         private float _rollTimeoutDelta;
+
+        // Time taken to perform falling action
         private float _fallTimeoutDelta;
 
         private CharacterController _characterController;
@@ -72,6 +74,7 @@ namespace CharacterControl
 
         private readonly int _animIdSpeed = Animator.StringToHash("Speed");
         private readonly int _animIdGrounded = Animator.StringToHash("Grounded");
+        private readonly int _animIdJump = Animator.StringToHash("Jump");
         private readonly int _animIdRoll = Animator.StringToHash("Roll");
         private readonly int _animIdRollMotionSpeed = Animator.StringToHash("RollMotionSpeed");
         private readonly int _animIdFall = Animator.StringToHash("FreeFall");
@@ -84,13 +87,17 @@ namespace CharacterControl
             _animator = GetComponent<Animator>();
             _inputStateHandler = GetComponent<InputStateHandler>();
             if (Camera.main != null) _mainCamera = Camera.main.gameObject;
-        
+
             _animator.SetFloat(_animIdRollMotionSpeed, rollMotionSpeed);
+
+            _fallTimeoutDelta = fallThreshold;
+            _jumpTimeoutDelta = jumpThreshold;
+            _rollTimeoutDelta = rollThreshold;
         }
 
         private void Update()
         {
-            RollAndGravity();
+            JumpAndRollAndGravity();
             GroundedCheck();
             Move();
         }
@@ -113,11 +120,10 @@ namespace CharacterControl
             float inputMagnitude = _inputStateHandler.analogMovement ? _inputStateHandler.move.magnitude : 1f;
 
             var isRolling = _animator.GetBool(_animIdRoll);
-        
+
             // Set Translate Speed
             if (isRolling)
             {
-                // m_MoveSpeed = 일정한 속도
                 _moveSpeed = rollSpeed;
             }
             else if (Mathf.Abs(currentHorizontalSpeed - targetSpeed) > speedOffset)
@@ -156,7 +162,7 @@ namespace CharacterControl
 
             // Translate position
             _characterController.Move(targetDirection.normalized * (_moveSpeed * Time.deltaTime) +
-                                       new Vector3(0.0f, _verticalVelocity, 0.0f) * Time.deltaTime);
+                                      new Vector3(0.0f, _verticalVelocity, 0.0f) * Time.deltaTime);
 
             // Set Animation Parameters
             _animator.SetFloat(_animIdSpeed, _animationBlend);
@@ -168,51 +174,69 @@ namespace CharacterControl
             // set sphere position, with offset
             var spherePosition =
                 new Vector3(transform.position.x, transform.position.y - groundedOffset, transform.position.z);
-            isGrounded = Physics.CheckSphere(spherePosition, groundedRadius, groundLayers, QueryTriggerInteraction.Ignore);
+            isGrounded = Physics.CheckSphere(spherePosition, groundedRadius, groundLayers,
+                QueryTriggerInteraction.Ignore);
 
             _animator?.SetBool(_animIdGrounded, isGrounded);
         }
 
-        private void RollAndGravity()
+        private void JumpAndRollAndGravity()
         {
             if (isGrounded)
             {
                 _fallTimeoutDelta = fallThreshold;
-            
+
                 _animator.SetBool(_animIdFall, false);
-            
+                _animator.SetBool(_animIdJump, false);
+
                 var isRolling = _animator.GetBool(_animIdRoll);
-            
+
                 if (_verticalVelocity < 0.0f)
                 {
                     _verticalVelocity = -2f;
                 }
-            
+
                 // Roll
                 if (!isRolling && _inputStateHandler.roll && _rollTimeoutDelta <= 0.0f)
                 {
                     // Get Direction & Rotate Character 
-                    Vector3 inputDirection = new Vector3(_inputStateHandler.move.x, 0.0f, _inputStateHandler.move.y).normalized;
-                    _targetRotation = Mathf.Atan2(inputDirection.x, inputDirection.z) * Mathf.Rad2Deg + _mainCamera.transform.eulerAngles.y;
+                    Vector3 inputDirection = new Vector3(_inputStateHandler.move.x, 0.0f, _inputStateHandler.move.y)
+                        .normalized;
+                    _targetRotation = Mathf.Atan2(inputDirection.x, inputDirection.z) * Mathf.Rad2Deg +
+                                      _mainCamera.transform.eulerAngles.y;
                     transform.rotation = Quaternion.Euler(0.0f, _targetRotation, 0.0f);
-                
+
                     // without rotation, velocity converges to 0.
                     _rotationVelocity = 0f;
-                
+
                     // Set MoveDisable while rolling
-                
+
                     _animator?.SetBool(_animIdRoll, true);
                 }
-            
+                else if (!isRolling && _inputStateHandler.jump && _jumpTimeoutDelta <= 0f)
+                {
+                    // the square root of H * -2 * G = how much velocity needed to reach desired height
+                    _verticalVelocity = Mathf.Sqrt(jumpHeight * -2f * gravity);
+
+                    // update animator if using character
+                    _animator?.SetBool(_animIdJump, true);
+                }
+
                 if (_rollTimeoutDelta >= 0.0f)
                 {
                     _rollTimeoutDelta -= Time.deltaTime;
                 }
+
+                if (_jumpTimeoutDelta >= 0.0f)
+                {
+                    _jumpTimeoutDelta -= Time.deltaTime;
+                }
             }
             else
             {
-                // reset the jump timeout timer
+                // reset the timeout timer
                 _rollTimeoutDelta = rollThreshold;
+                _jumpTimeoutDelta = jumpThreshold;
 
                 // fall timeout
                 if (_fallTimeoutDelta >= 0.0f)
@@ -223,6 +247,8 @@ namespace CharacterControl
                 {
                     _animator?.SetBool(_animIdFall, true);
                 }
+
+                _inputStateHandler.jump = false;
             }
 
             if (_verticalVelocity < MaxVerticalVelocity)
@@ -265,7 +291,7 @@ namespace CharacterControl
         {
             if (animationEvent.animatorClipInfo.weight < 0.5f) return;
             if (footstepAudioClips.Length <= 0) return;
-            
+
             var index = Random.Range(0, footstepAudioClips.Length);
             AudioSource.PlayClipAtPoint(footstepAudioClips[index], transform.position, footstepAudioVolume);
         }
