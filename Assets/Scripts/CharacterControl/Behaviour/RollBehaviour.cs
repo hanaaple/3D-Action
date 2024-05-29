@@ -1,14 +1,12 @@
 using UnityEngine;
 
-namespace CharacterControl
+namespace CharacterControl.Behaviour
 {
     public class RollBehaviour : StateMachineBehaviour
     {
-        private static readonly int AnimIdRoll = Animator.StringToHash("Roll");
-    
         public override void OnStateExit(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
         {
-            animator.SetBool(AnimIdRoll, false);
+            animator.GetComponent<Player>().StateMachine.ChangeStateByInputOrIdle();
         }
     }
 }
