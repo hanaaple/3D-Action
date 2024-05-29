@@ -1,3 +1,5 @@
+using System;
+using CharacterControl.State;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
@@ -6,9 +8,12 @@ namespace CharacterControl
     [RequireComponent(typeof(CharacterController), typeof(Animator), typeof(InputStateHandler))]
     public class ThirdPlayerController : MonoBehaviour
     {
+        // 스탯 or 무게에 따라 변화하고 싶으면 모션 스피드, 이동 속도를 변화시켜야된다.
+
+        // 기본 설정값 Field
         [Header("Move")]
-        [SerializeField] private float moveSpeed = 2.0f;
-        [SerializeField] private float runSpeed = 5.335f;
+        [SerializeField] private float moveSpeed = 2.0f; // 실제 움직이는 속도 및 애니메이션 속도
+        [SerializeField] private float runSpeed = 5.335f; // 실제 움직이는 속도 및 애니메이션 속도
         [Range(0.0f, 0.3f)] [SerializeField] private float rotationSmoothTime = 0.12f;
         [SerializeField] private float speedChangeRate = 10.0f;
 
@@ -21,27 +26,23 @@ namespace CharacterControl
         [Range(0, 1)] [SerializeField] private float landingAudioVolume = 0.5f;
 
         [Header("Roll")]
-        [SerializeField] private float rollSpeed = 5f;
+        public float rollSpeed = 5f;
         [SerializeField] private float rollMotionSpeed = 1f;
         [SerializeField] private float rollThreshold = 0f;
 
         [Header("Jump")]
-        [SerializeField] private float jumpHeight = 1.2f;
+        public float jumpHeight = 1.2f;
         [SerializeField] private float jumpThreshold = 0.2f;
 
         [Header("Gravity")]
-        [SerializeField] private float gravity = -15.0f;
+        public float gravity = -15.0f;
         [SerializeField] private float fallThreshold = 0.15f;
 
         [Header("Player Grounded")]
-        [SerializeField] private bool isGrounded;
-        [SerializeField] private float groundedOffset = -0.14f;
-        [SerializeField] private float groundedRadius = 0.28f;
         [SerializeField] private LayerMask groundLayers;
 
         [Header("Cinemachine")]
         [SerializeField] private GameObject cinemachineCameraTarget;
-
         [SerializeField] private float topClamp = 70.0f;
         [SerializeField] private float bottomClamp = -30.0f;
         [Range(0.1f, 20)] [SerializeField] private float xAxisSensitivity = 1f;
@@ -53,55 +54,62 @@ namespace CharacterControl
         private float _cameraTargetYAxis;
         private float _cameraTargetXAxis;
 
-        private float _moveSpeed;
-        private float _verticalVelocity;
+        // Move
         private float _rotationVelocity;
         private float _animationBlend;
+        /// <summary>
+        /// 현재 캐릭터 Forward 각도
+        /// </summary>
         private float _targetRotation;
+        internal float VerticalVelocity;
+        internal float MoveSpeed;
 
         // Time after landing when the action cannot be performed
-        private float _jumpTimeoutDelta;
-        private float _rollTimeoutDelta;
+        internal float JumpTimeoutDelta;
+        internal float RollTimeoutDelta;
 
         // Time taken to perform falling action
         private float _fallTimeoutDelta;
 
+        // Ground
+        internal bool IsGrounded;
+
         private CharacterController _characterController;
-        private Animator _animator;
         private InputStateHandler _inputStateHandler;
         private GameObject _mainCamera;
+        internal Animator Animator;
 
-        private const float MaxVerticalVelocity = 53.0f;
         private const float MouseMovementThreshold = 0.01f;
 
         private readonly int _animIdSpeed = Animator.StringToHash("Speed");
         private readonly int _animIdGrounded = Animator.StringToHash("Grounded");
-        private readonly int _animIdJump = Animator.StringToHash("Jump");
-        private readonly int _animIdRoll = Animator.StringToHash("Roll");
         private readonly int _animIdRollMotionSpeed = Animator.StringToHash("RollMotionSpeed");
         private readonly int _animIdFall = Animator.StringToHash("FreeFall");
         private readonly int _animIdMotionSpeed = Animator.StringToHash("RunMotionSpeed");
 
-
         private void Start()
         {
             _characterController = GetComponent<CharacterController>();
-            _animator = GetComponent<Animator>();
+            Animator = GetComponent<Animator>();
             _inputStateHandler = GetComponent<InputStateHandler>();
             if (Camera.main != null) _mainCamera = Camera.main.gameObject;
 
-            _animator.SetFloat(_animIdRollMotionSpeed, rollMotionSpeed);
+            Animator.SetFloat(_animIdRollMotionSpeed, rollMotionSpeed);
 
             _fallTimeoutDelta = fallThreshold;
-            _jumpTimeoutDelta = jumpThreshold;
-            _rollTimeoutDelta = rollThreshold;
+            JumpTimeoutDelta = jumpThreshold;
+            RollTimeoutDelta = rollThreshold;
+
+            // 만약 캐릭터가 순간이동한다면 업데이트 해줘야됨
+            _targetRotation = transform.eulerAngles.y;
         }
 
+        // Gravity, GroundCheck 등을 Custom 하게 되는 경우 StateUpdate으로 위치 변경
         private void Update()
         {
-            JumpAndRollAndGravity();
+            UpdateAnimationSpeed();
+            Gravity();
             GroundedCheck();
-            Move();
         }
 
         private void LateUpdate()
@@ -109,154 +117,78 @@ namespace CharacterControl
             CameraRotation();
         }
 
-        private void Move()
-        {
-            float targetSpeed = _inputStateHandler.run ? runSpeed : moveSpeed;
-
-            // Vector == operation uses approximation so it is not error prone.
-            if (_inputStateHandler.move == Vector2.zero) targetSpeed = 0.0f;
-
-            float currentHorizontalSpeed =
-                new Vector3(_characterController.velocity.x, 0.0f, _characterController.velocity.z).magnitude;
-            float speedOffset = 0.1f;
-            float inputMagnitude = _inputStateHandler.analogMovement ? _inputStateHandler.move.magnitude : 1f;
-
-            var isRolling = _animator.GetBool(_animIdRoll);
-
-            // Set Translate Speed
-            if (isRolling)
-            {
-                _moveSpeed = rollSpeed;
-            }
-            else if (Mathf.Abs(currentHorizontalSpeed - targetSpeed) > speedOffset)
-            {
-                _moveSpeed = Mathf.Lerp(currentHorizontalSpeed, targetSpeed * inputMagnitude,
-                    Time.deltaTime * speedChangeRate);
-                _moveSpeed = Mathf.Round(_moveSpeed * 1000f) / 1000f;
-            }
-            else
-            {
-                _moveSpeed = targetSpeed;
-            }
-
-            // Set BlendTree Speed
-            _animationBlend = Mathf.Lerp(_animationBlend, targetSpeed, Time.deltaTime * speedChangeRate);
-            if (_animationBlend < 0.01f) _animationBlend = 0f;
-
-            // Set Direction of Move
-            if (!isRolling && _inputStateHandler.move != Vector2.zero)
-            {
-                // Get degree of y-axis
-                Vector3 inputDirection = new Vector3(_inputStateHandler.move.x, 0.0f, _inputStateHandler.move.y)
-                    .normalized;
-                _targetRotation = Mathf.Atan2(inputDirection.x, inputDirection.z) * Mathf.Rad2Deg +
-                                  _mainCamera.transform.eulerAngles.y;
-
-                // Mathf.SmoothDampAngle() ensures interpolation
-                var rotation = Mathf.SmoothDampAngle(transform.eulerAngles.y, _targetRotation,
-                    ref _rotationVelocity, rotationSmoothTime);
-
-                // rotate to face input direction relative to camera position
-                transform.rotation = Quaternion.Euler(0.0f, rotation, 0.0f);
-            }
-
-            var targetDirection = Quaternion.Euler(0.0f, _targetRotation, 0.0f) * Vector3.forward;
-
-            // Translate position
-            _characterController.Move(targetDirection.normalized * (_moveSpeed * Time.deltaTime) +
-                                      new Vector3(0.0f, _verticalVelocity, 0.0f) * Time.deltaTime);
-
-            // Set Animation Parameters
-            _animator.SetFloat(_animIdSpeed, _animationBlend);
-            _animator.SetFloat(_animIdMotionSpeed, inputMagnitude);
-        }
-
         private void GroundedCheck()
         {
             // set sphere position, with offset
-            var spherePosition =
-                new Vector3(transform.position.x, transform.position.y - groundedOffset, transform.position.z);
-            isGrounded = Physics.CheckSphere(spherePosition, groundedRadius, groundLayers,
+            var spherePosition = new Vector3(transform.position.x + _characterController.center.x,
+                transform.position.y + _characterController.center.y - (_characterController.height / 2) -
+                _characterController.radius,
+                transform.position.z + _characterController.center.z);
+            IsGrounded = Physics.CheckSphere(spherePosition, _characterController.radius, groundLayers,
                 QueryTriggerInteraction.Ignore);
 
-            _animator?.SetBool(_animIdGrounded, isGrounded);
+            Animator?.SetBool(_animIdGrounded, IsGrounded);
         }
 
-        private void JumpAndRollAndGravity()
+        private void Gravity()
         {
-            if (isGrounded)
+            if (IsGrounded)
             {
+                if (VerticalVelocity < 0.0f)
+                {
+                    VerticalVelocity = -2f;
+                }
+
+                // reset the timeout timer
                 _fallTimeoutDelta = fallThreshold;
 
-                _animator.SetBool(_animIdFall, false);
-                _animator.SetBool(_animIdJump, false);
+                Animator.SetBool(_animIdFall, false);
 
-                var isRolling = _animator.GetBool(_animIdRoll);
-
-                if (_verticalVelocity < 0.0f)
+                if (RollTimeoutDelta >= 0.0f)
                 {
-                    _verticalVelocity = -2f;
+                    RollTimeoutDelta -= Time.deltaTime;
                 }
 
-                // Roll
-                if (!isRolling && _inputStateHandler.roll && _rollTimeoutDelta <= 0.0f)
+                if (JumpTimeoutDelta >= 0.0f)
                 {
-                    // Get Direction & Rotate Character 
-                    Vector3 inputDirection = new Vector3(_inputStateHandler.move.x, 0.0f, _inputStateHandler.move.y)
-                        .normalized;
-                    _targetRotation = Mathf.Atan2(inputDirection.x, inputDirection.z) * Mathf.Rad2Deg +
-                                      _mainCamera.transform.eulerAngles.y;
-                    transform.rotation = Quaternion.Euler(0.0f, _targetRotation, 0.0f);
-
-                    // without rotation, velocity converges to 0.
-                    _rotationVelocity = 0f;
-
-                    // Set MoveDisable while rolling
-
-                    _animator?.SetBool(_animIdRoll, true);
-                }
-                else if (!isRolling && _inputStateHandler.jump && _jumpTimeoutDelta <= 0f)
-                {
-                    // the square root of H * -2 * G = how much velocity needed to reach desired height
-                    _verticalVelocity = Mathf.Sqrt(jumpHeight * -2f * gravity);
-
-                    // update animator if using character
-                    _animator?.SetBool(_animIdJump, true);
-                }
-
-                if (_rollTimeoutDelta >= 0.0f)
-                {
-                    _rollTimeoutDelta -= Time.deltaTime;
-                }
-
-                if (_jumpTimeoutDelta >= 0.0f)
-                {
-                    _jumpTimeoutDelta -= Time.deltaTime;
+                    JumpTimeoutDelta -= Time.deltaTime;
                 }
             }
             else
             {
-                // reset the timeout timer
-                _rollTimeoutDelta = rollThreshold;
-                _jumpTimeoutDelta = jumpThreshold;
+                VerticalVelocity += gravity * Time.deltaTime;
 
-                // fall timeout
+                // reset the timeout timer
+                RollTimeoutDelta = rollThreshold;
+                JumpTimeoutDelta = jumpThreshold;
+
                 if (_fallTimeoutDelta >= 0.0f)
                 {
                     _fallTimeoutDelta -= Time.deltaTime;
                 }
                 else
                 {
-                    _animator?.SetBool(_animIdFall, true);
+                    Animator?.SetBool(_animIdFall, true);
                 }
-
-                _inputStateHandler.jump = false;
             }
+        }
 
-            if (_verticalVelocity < MaxVerticalVelocity)
-            {
-                _verticalVelocity += gravity * Time.deltaTime;
-            }
+        private void UpdateAnimationSpeed()
+        {
+            float targetSpeed = _inputStateHandler.run ? runSpeed : moveSpeed;
+
+            // Vector == operation uses approximation so it is not error prone.
+            if (_inputStateHandler.move == Vector2.zero) targetSpeed = 0.0f;
+
+            float inputMagnitude = _inputStateHandler.analogMovement ? _inputStateHandler.move.magnitude : 1f;
+
+            // Set BlendTree Speed
+            _animationBlend = Mathf.Lerp(_animationBlend, targetSpeed, Time.deltaTime * speedChangeRate);
+            if (_animationBlend < 0.01f) _animationBlend = 0f;
+
+            // Set Animation Parameters
+            Animator.SetFloat(_animIdSpeed, _animationBlend);
+            Animator.SetFloat(_animIdMotionSpeed, inputMagnitude);
         }
 
         private void CameraRotation()
@@ -281,11 +213,137 @@ namespace CharacterControl
                 _cameraTargetYAxis, 0.0f);
         }
 
+        public void UpdateSpeed()
+        {
+            float targetSpeed = _inputStateHandler.run ? runSpeed : moveSpeed;
+
+            // Vector == operation uses approximation so it is not error prone.
+            if (_inputStateHandler.move == Vector2.zero) targetSpeed = 0.0f;
+
+            float currentHorizontalSpeed =
+                new Vector3(_characterController.velocity.x, 0.0f, _characterController.velocity.z).magnitude;
+            float speedOffset = 0.1f;
+            float inputMagnitude = _inputStateHandler.analogMovement ? _inputStateHandler.move.magnitude : 1f;
+
+            if (Mathf.Abs(currentHorizontalSpeed - targetSpeed) > speedOffset)
+            {
+                MoveSpeed = Mathf.Lerp(currentHorizontalSpeed, targetSpeed * inputMagnitude,
+                    Time.deltaTime * speedChangeRate);
+                MoveSpeed = Mathf.Round(MoveSpeed * 1000f) / 1000f;
+            }
+            else
+            {
+                MoveSpeed = targetSpeed;
+            }
+        }
+
+        public void Translate()
+        {
+            // 기존의 이동방향
+            var targetDirection = Quaternion.Euler(0.0f, _targetRotation, 0.0f) * Vector3.forward;
+
+            // Translate position
+            _characterController.Move(targetDirection.normalized * (MoveSpeed * Time.deltaTime) +
+                                      new Vector3(0.0f, VerticalVelocity, 0.0f) * Time.deltaTime);
+        }
+
+        public void RotateImmediately()
+        {
+            // without rotation, velocity converges to 0.
+            _rotationVelocity = 0f;
+            transform.rotation = Quaternion.Euler(0.0f, _targetRotation, 0.0f);
+        }
+
+        public void Rotate()
+        {
+            if (_inputStateHandler.move != Vector2.zero)
+            {
+                // Get degree of y-axis
+                var inputDirection = new Vector3(_inputStateHandler.move.x, 0.0f, _inputStateHandler.move.y).normalized;
+                _targetRotation = Mathf.Atan2(inputDirection.x, inputDirection.z) * Mathf.Rad2Deg +
+                                  _mainCamera.transform.eulerAngles.y;
+
+                // Mathf.SmoothDampAngle() ensures interpolation
+                var rotation = Mathf.SmoothDampAngle(transform.eulerAngles.y, _targetRotation, ref _rotationVelocity,
+                    rotationSmoothTime);
+
+                // rotate to face input direction relative to camera position
+                transform.rotation = Quaternion.Euler(0.0f, rotation, 0.0f);
+            }
+        }
+
+        public bool TryChangeStateByInput(ActionStateMachine stateMachine)
+        {
+            if (!ChangeStateEnableByInput(stateMachine))
+            {
+                return false;
+            }
+
+            var bufferData = _inputStateHandler.DeQueue();
+
+            stateMachine.ChangeState(bufferData.Type);
+
+            return true;
+        }
+
+        public void ChangeStateByInputOrIdle(ActionStateMachine stateMachine)
+        {
+            Type stateType;
+            if (_inputStateHandler.HasBuffer())
+            {
+                var bufferData = _inputStateHandler.Peek();
+                stateType = bufferData.Type;
+            }
+            else
+            {
+                stateType = typeof(IdleState);
+            }
+
+            if (ChangeStateEnable(stateMachine, stateType))
+            {
+                _inputStateHandler.TryDeQueue();
+                stateMachine.ChangeState(stateType);
+            }
+            else
+            {
+                // 에러는 아니지만, 해당 State를 실행할 수 없음.
+                if (stateMachine.IsDebug)
+                    Debug.LogWarning($"{stateType}을 실행할 수 없음");
+
+                stateMachine.ChangeState(typeof(IdleState));
+            }
+        }
+
+        private bool ChangeStateEnableByInput(ActionStateMachine stateMachine)
+        {
+            if (!_inputStateHandler.HasBuffer()) return false;
+            var bufferData = _inputStateHandler.Peek();
+
+            return ChangeStateEnable(stateMachine, bufferData.Type);
+        }
+
+        private static bool ChangeStateEnable(ActionStateMachine stateMachine, Type type)
+        {
+            var state = stateMachine.GetState(type);
+
+            if (state.StateChangeEnable(stateMachine))
+            {
+                return true;
+            }
+
+            return false;
+        }
+
         private static float ClampAngle(float value, float min, float max)
         {
             if (value <= -360f) value += 360f;
             if (value >= 360f) value -= 360f;
             return Mathf.Clamp(value, min, max);
+        }
+
+        public float GetMoveSpeed()
+        {
+            return MoveSpeed;
         }
 
         // this work by animation event
@@ -312,9 +370,9 @@ namespace CharacterControl
             AudioSource.PlayClipAtPoint(landingAudioClip, transform.position, landingAudioVolume);
         }
 
-        public float GetMoveSpeed()
+        public void ChangeWeapon(AnimationEvent animationEvent)
         {
-            return _moveSpeed;
+            Debug.LogWarning($"ChangeWeapon!");
         }
     }
 }
