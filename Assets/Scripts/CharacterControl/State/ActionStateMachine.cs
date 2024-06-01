@@ -11,7 +11,8 @@ namespace CharacterControl.State
         private IdleState _idleState;
         private JumpState _jumpState;
         private RollState _rollState;
-        private AttackState _attackState;
+        private LeftAttackState _leftAttackState;
+        private RightAttackState _rightAttackState;
         private StrongAttackState _strongAttackState;
         private LeftHandChangeState _leftHandChangeState;
         private RightHandChangeState _rightHandChangeState;
@@ -24,7 +25,8 @@ namespace CharacterControl.State
             _idleState = new IdleState(controller);
             _jumpState = new JumpState(controller);
             _rollState = new RollState(controller);
-            _attackState = new AttackState(controller);
+            _leftAttackState = new LeftAttackState(controller);
+            _rightAttackState = new RightAttackState(controller);
             _strongAttackState = new StrongAttackState(controller);
             _leftHandChangeState = new LeftHandChangeState(controller);
             _rightHandChangeState = new RightHandChangeState(controller);
@@ -77,9 +79,13 @@ namespace CharacterControl.State
             {
                 actionState = _rollState;
             }
-            else if (type == typeof(AttackState))
+            else if (type == typeof(LeftAttackState))
             {
-                actionState = _attackState;
+                actionState = _leftAttackState;
+            }
+            else if (type == typeof(RightAttackState))
+            {
+                actionState = _rightAttackState;
             }
             else if (type == typeof(StrongAttackState))
             {
