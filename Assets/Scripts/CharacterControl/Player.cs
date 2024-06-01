@@ -3,13 +3,10 @@ using UnityEngine;
 
 namespace CharacterControl
 {
-    // Player Data 존재
     // 세팅 값은 존재하지 않음
     // State Pattern - Client
     public class Player : MonoBehaviour
-    {
-        [SerializeField] private PlayerData playerData;
-        
+    {        
         internal ActionStateMachine StateMachine;
 
         public bool isStateMachineDebug;

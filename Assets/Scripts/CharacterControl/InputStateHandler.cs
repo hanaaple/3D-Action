@@ -85,9 +85,14 @@ namespace CharacterControl
             JumpInput();
         }
 
-        public void OnAttack(InputValue value)
+        public void OnLeftAttack(InputValue value)
         {
-            AttackInput();
+            LeftAttackInput();
+        }
+        
+        public void OnRightAttack(InputValue value)
+        {
+            RightAttackInput();
         }
 
         public void OnStrongAttack(InputValue value)
@@ -145,10 +150,16 @@ namespace CharacterControl
             lockOnOff = newLockState;
         }
 
-        private void AttackInput()
+        private void LeftAttackInput()
         {
-            _inputBuffer.Enqueue(new InputBufferData(typeof(AttackState), Time.unscaledTime));
-            debuggingInputBuffer.Add(new InputBufferData(typeof(AttackState), Time.unscaledTime));
+            _inputBuffer.Enqueue(new InputBufferData(typeof(LeftAttackState), Time.unscaledTime));
+            debuggingInputBuffer.Add(new InputBufferData(typeof(LeftAttackState), Time.unscaledTime));
+        }
+        
+        private void RightAttackInput()
+        {
+            _inputBuffer.Enqueue(new InputBufferData(typeof(RightAttackState), Time.unscaledTime));
+            debuggingInputBuffer.Add(new InputBufferData(typeof(RightAttackState), Time.unscaledTime));
         }
 
         private void StrongAttackInput(bool newAttackState)
@@ -206,7 +217,6 @@ namespace CharacterControl
                 break;
             }
         }
-
 
         public InputBufferData TryDeQueue()
         {
