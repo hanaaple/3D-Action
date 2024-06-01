@@ -1,5 +1,6 @@
 using System;
 using CharacterControl.State;
+using Data;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
@@ -57,10 +58,12 @@ namespace CharacterControl
         // Move
         private float _rotationVelocity;
         private float _animationBlend;
+
         /// <summary>
         /// 현재 캐릭터 Forward 각도
         /// </summary>
         private float _targetRotation;
+        
         internal float VerticalVelocity;
         internal float MoveSpeed;
 
@@ -370,9 +373,41 @@ namespace CharacterControl
             AudioSource.PlayClipAtPoint(landingAudioClip, transform.position, landingAudioVolume);
         }
 
-        public void ChangeWeapon(AnimationEvent animationEvent)
+        public void ChangeLeftWeapon(AnimationEvent animationEvent)
         {
             Debug.LogWarning($"ChangeWeapon!");
+
+            var equipViewModel = DataManager.instance.equipViewModel;
+            equipViewModel.SetLeftWeaponIndexNext();
+            
+            // 장착 여부에 따라
+            if (equipViewModel.GetCurrentLeftWeapon() != null)
+            {
+                Animator.SetBool("Left Grip", true);
+            }
+            else
+            {
+                Animator.SetBool("Left Grip", false);
+            }
+        }
+
+        public void ChangeRightWeapon(AnimationEvent animationEvent)
+        {
+            Debug.LogWarning($"ChangeWeapon!");
+
+            var equipViewModel = DataManager.instance.equipViewModel;
+            equipViewModel.SetRightWeaponIndexNext();
+
+            // Invoke work Immediately?
+            // 장착 여부에 따라
+            if (equipViewModel.GetCurrentRightWeapon() != null)
+            {
+                Animator.SetBool("Right Grip", true);
+            }
+            else
+            {
+                Animator.SetBool("Right Grip", false);
+            }
         }
     }
 }
