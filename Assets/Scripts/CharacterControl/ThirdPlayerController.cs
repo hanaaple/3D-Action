@@ -81,6 +81,7 @@ namespace CharacterControl
         private InputStateHandler _inputStateHandler;
         private GameObject _mainCamera;
         internal Animator Animator;
+        internal RuntimeAnimatorController OriginalAnimatorController;
 
         private const float MouseMovementThreshold = 0.01f;
 
@@ -89,6 +90,8 @@ namespace CharacterControl
         private readonly int _animIdRollMotionSpeed = Animator.StringToHash("RollMotionSpeed");
         private readonly int _animIdFall = Animator.StringToHash("FreeFall");
         private readonly int _animIdMotionSpeed = Animator.StringToHash("RunMotionSpeed");
+        private readonly int _animIdRightGrip = Animator.StringToHash("RightGrip");
+        private readonly int _animIdLeftGrip = Animator.StringToHash("LeftGrip");
 
         private void Start()
         {
@@ -105,6 +108,8 @@ namespace CharacterControl
 
             // 만약 캐릭터가 순간이동한다면 업데이트 해줘야됨
             _targetRotation = transform.eulerAngles.y;
+            
+            OriginalAnimatorController = Animator.runtimeAnimatorController;
         }
 
         // Gravity, GroundCheck 등을 Custom 하게 되는 경우 StateUpdate으로 위치 변경
@@ -275,6 +280,11 @@ namespace CharacterControl
             }
         }
 
+        public bool TryGetInput<T>() where T : BaseActionState
+        {
+            return _inputStateHandler.TryRemove<T>();
+        }
+        
         public bool TryChangeStateByInput(ActionStateMachine stateMachine)
         {
             if (!ChangeStateEnableByInput(stateMachine))
@@ -284,7 +294,7 @@ namespace CharacterControl
 
             var bufferData = _inputStateHandler.DeQueue();
 
-            stateMachine.ChangeState(bufferData.Type);
+            stateMachine.ChangeState(bufferData.Type, true);
 
             return true;
         }
@@ -305,7 +315,7 @@ namespace CharacterControl
             if (ChangeStateEnable(stateMachine, stateType))
             {
                 _inputStateHandler.TryDeQueue();
-                stateMachine.ChangeState(stateType);
+                stateMachine.ChangeState(stateType, true);
             }
             else
             {
@@ -313,7 +323,7 @@ namespace CharacterControl
                 if (stateMachine.IsDebug)
                     Debug.LogWarning($"{stateType}을 실행할 수 없음");
 
-                stateMachine.ChangeState(typeof(IdleState));
+                stateMachine.ChangeState(typeof(IdleState), true);
             }
         }
 
@@ -383,11 +393,11 @@ namespace CharacterControl
             // 장착 여부에 따라
             if (equipViewModel.GetCurrentLeftWeapon() != null)
             {
-                Animator.SetBool("Left Grip", true);
+                Animator.SetBool(_animIdLeftGrip, true);
             }
             else
             {
-                Animator.SetBool("Left Grip", false);
+                Animator.SetBool(_animIdLeftGrip, false);
             }
         }
 
@@ -402,11 +412,11 @@ namespace CharacterControl
             // 장착 여부에 따라
             if (equipViewModel.GetCurrentRightWeapon() != null)
             {
-                Animator.SetBool("Right Grip", true);
+                Animator.SetBool(_animIdRightGrip, true);
             }
             else
             {
-                Animator.SetBool("Right Grip", false);
+                Animator.SetBool(_animIdRightGrip, false);
             }
         }
     }

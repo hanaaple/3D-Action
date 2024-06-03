@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace CharacterControl.State
@@ -8,33 +9,27 @@ namespace CharacterControl.State
     {
         private BaseActionState _currentBaseActionState;
 
-        private IdleState _idleState;
-        private JumpState _jumpState;
-        private RollState _rollState;
-        private LeftAttackState _leftAttackState;
-        private RightAttackState _rightAttackState;
-        private StrongAttackState _strongAttackState;
-        private LeftHandChangeState _leftHandChangeState;
-        private RightHandChangeState _rightHandChangeState;
 
+        private Dictionary<Type, BaseActionState> _states;
+        
         // 토이프로젝트 - Debug를 커스텀하고 필드 값에 따라 자동으로 디버깅 여부 체크하도록 구현하기
         public bool IsDebug;
 
         public void Initialize(ThirdPlayerController controller, bool isStateMachineDebug)
         {
-            _idleState = new IdleState(controller);
-            _jumpState = new JumpState(controller);
-            _rollState = new RollState(controller);
-            _leftAttackState = new LeftAttackState(controller);
-            _rightAttackState = new RightAttackState(controller);
-            _strongAttackState = new StrongAttackState(controller);
-            _leftHandChangeState = new LeftHandChangeState(controller);
-            _rightHandChangeState = new RightHandChangeState(controller);
-
-            _currentBaseActionState = _idleState;
-            _currentBaseActionState.OnEnterState(this);
-
             IsDebug = isStateMachineDebug;
+            _states = new Dictionary<Type, BaseActionState>();
+            
+            _states.Add(typeof(IdleState), new IdleState(controller));
+            _states.Add(typeof(JumpState), new JumpState(controller));
+            _states.Add(typeof(RollState), new RollState(controller));
+            _states.Add(typeof(LeftAttackState), new LeftAttackState(controller));
+            _states.Add(typeof(RightAttackState), new RightAttackState(controller));
+            _states.Add(typeof(StrongAttackState), new StrongAttackState(controller));
+            _states.Add(typeof(LeftHandChangeState), new LeftHandChangeState(controller));
+            _states.Add(typeof(RightHandChangeState), new RightHandChangeState(controller));
+            
+            ChangeState(typeof(IdleState));
         }
 
         public void UpdateState()
@@ -47,12 +42,12 @@ namespace CharacterControl.State
             _currentBaseActionState?.LateUpdate(this);
         }
 
-        public void ChangeState(Type type)
+        public void ChangeState(Type type, bool isUpdate = false)
         {
             if (IsDebug)
-                Debug.Log($"{_currentBaseActionState.GetType()} -> {type}");
+                Debug.Log($"{_currentBaseActionState?.GetType()} -> {type}");
 
-            if (_currentBaseActionState == null || type == _currentBaseActionState.GetType())
+            if (type == _currentBaseActionState?.GetType())
                 return;
 
             _currentBaseActionState?.OnExitState(this);
@@ -61,46 +56,18 @@ namespace CharacterControl.State
 
             _currentBaseActionState?.OnEnterState(this);
 
-            _currentBaseActionState?.Update(this, true);
+            if(isUpdate)
+                _currentBaseActionState?.Update(this, true);
         }
 
         public BaseActionState GetState(Type type)
         {
-            BaseActionState actionState = null;
-            if (type == typeof(IdleState))
-            {
-                actionState = _idleState;
-            }
-            else if (type == typeof(JumpState))
-            {
-                actionState = _jumpState;
-            }
-            else if (type == typeof(RollState))
-            {
-                actionState = _rollState;
-            }
-            else if (type == typeof(LeftAttackState))
-            {
-                actionState = _leftAttackState;
-            }
-            else if (type == typeof(RightAttackState))
-            {
-                actionState = _rightAttackState;
-            }
-            else if (type == typeof(StrongAttackState))
-            {
-                actionState = _strongAttackState;
-            }
-            else if (type == typeof(RightHandChangeState))
-            {
-                actionState = _rightHandChangeState;
-            }
-            else if (type == typeof(LeftHandChangeState))
-            {
-                actionState = _leftHandChangeState;
-            }
-
-            return actionState;
+            return _states.GetValueOrDefault(type);
+        }
+        
+        public Type GetCurrentStateType()
+        {
+            return _currentBaseActionState.GetType();
         }
 
         public bool IsTypeEqualToCurrentState(Type type)

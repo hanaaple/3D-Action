@@ -14,6 +14,7 @@ namespace Model
         public Weapon[] lefts;
         public Weapon[] rights;
         public Accessory[] accessories;
+        // 방어구 부위마다 나눠야됨
         public Armor[] armors;
         public Tool[] tools;
 
@@ -64,9 +65,13 @@ namespace Model
             }
         }
 
-        public EquippedItemData()
+        public EquippedItemData(int leftCapacity, int rightCapacity, int accessoryCapacity, int armorCapacity, int toolCapacity)
         {
-
+            lefts = new Weapon[leftCapacity];
+            rights = new Weapon[rightCapacity];
+            accessories = new Accessory[accessoryCapacity];
+            armors = new Armor[armorCapacity];
+            tools = new Tool[toolCapacity];
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
@@ -127,8 +132,8 @@ namespace Model
 
             OnPropertyChanged(nameof(T));
         }
-
-        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        
+        public virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }

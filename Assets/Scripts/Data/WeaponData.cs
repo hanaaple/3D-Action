@@ -20,5 +20,6 @@ namespace Data
         
         public RuntimeAnimatorController runtimeAnimatorController;
         public float damage;
+        public float attackMotionSpeed;
     }
 }
