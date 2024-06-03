@@ -4,7 +4,7 @@ namespace CharacterControl.State
 {
     public class RightHandChangeState : BaseActionState
     {
-        private readonly int _animIdRightHand = Animator.StringToHash("Right Hand");
+        private readonly int _animIdRightHand = Animator.StringToHash("RightWeaponChange");
         
         public RightHandChangeState(ThirdPlayerController controller) : base(controller)
         {
@@ -12,7 +12,7 @@ namespace CharacterControl.State
 
         public override void OnEnterState(ActionStateMachine stateMachine)
         {
-            // OnAnimationEnd -> InputBuffer 상태에 따라 StateMachine.StateChange<buffer.Type>()
+            // WeaponChangeBehaviour.OnStateExit()에 의해 종료
             Controller.Animator.SetTrigger(_animIdRightHand);
         }
 
@@ -33,10 +33,10 @@ namespace CharacterControl.State
 
         public override bool StateChangeEnable(ActionStateMachine stateMachine)
         {
-            if (Controller.IsGrounded && stateMachine.IsTypeEqualToCurrentState(typeof(IdleState)))
-            {
-                return true;
-            }
+            // if (Controller.IsGrounded && stateMachine.IsTypeEqualToCurrentState(typeof(IdleState)))
+            // {
+            //     return true;
+            // }
 
             return false;
         }

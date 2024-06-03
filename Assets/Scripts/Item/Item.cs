@@ -20,9 +20,12 @@ namespace Item
         public int maximumNumberOfPossession;
 
         public int itemEffectDescription;
-        
-        
-        
+
+
+        public virtual string GetItemName()
+        {
+            return "";
+        }
     }
 }
 

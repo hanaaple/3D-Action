@@ -1,4 +1,5 @@
 ﻿using System;
+using TMPro;
 using UnityEngine;
 using UnityEngine.InputSystem.Utilities;
 using UnityEngine.UI;
@@ -22,10 +23,13 @@ namespace View.Slot
                 itemImages[i].enabled = false;
                 itemSlots[i].enabled = false;
             }
-
-            itemImages[0].sprite = item.slotImage;
-            itemImages[0].enabled = true;
             itemSlots[0].enabled = true;
+
+            if (item != null)
+            {
+                itemImages[0].sprite = item.slotImage;
+                itemImages[0].enabled = true;
+            }
         }
 
         public void DisplaySlotUI(ReadOnlyArray<Item.Item> items)
@@ -36,6 +40,7 @@ namespace View.Slot
                 itemImages[i].enabled = false;
                 itemSlots[i].enabled = false;
             }
+            itemSlots[0].enabled = true;
 
             for (int i = 0; i < items.Count; i++)
             {
@@ -47,7 +52,7 @@ namespace View.Slot
 
         public void BlinkSlot()
         {
-            _animator.SetTrigger(_blinkHash);
+            // _animator.SetTrigger(_blinkHash);
         }
 
         public int GetCount()

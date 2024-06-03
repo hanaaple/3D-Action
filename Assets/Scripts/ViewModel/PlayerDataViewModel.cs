@@ -75,8 +75,9 @@ namespace ViewModel
         
         // EquippedItemData -> PlayerDataChange
         // StatusDataChange -> PlayerDataChange
-        public void Initialize(EquippedItemData equippedItemData, StatusData statusData)
+        public void Initialize(PlayerData playerData, EquippedItemData equippedItemData, StatusData statusData)
         {
+            _playerData = playerData;
             _equippedItemData = equippedItemData;
             _statusData = statusData;
             

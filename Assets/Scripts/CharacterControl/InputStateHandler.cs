@@ -41,7 +41,7 @@ namespace CharacterControl
         public float inputBufferThreshold = 0.5f;
 
         // 입력된 시간
-        private readonly Queue<InputBufferData> _inputBuffer = new();
+        private readonly List<InputBufferData> _inputBuffer = new();
         
         // 추후 디버깅 가능한 Queue 구현
         [SerializeField] private List<InputBufferData> debuggingInputBuffer;
@@ -130,13 +130,13 @@ namespace CharacterControl
         private void RollInput()
         {
             // Debug.Log("Add Roll Inpu");
-            _inputBuffer.Enqueue(new InputBufferData(typeof(RollState), Time.unscaledTime));
+            _inputBuffer.Add(new InputBufferData(typeof(RollState), Time.unscaledTime));
             debuggingInputBuffer.Add(new InputBufferData(typeof(RollState), Time.unscaledTime));
         }
 
         private void JumpInput()
         {
-            _inputBuffer.Enqueue(new InputBufferData(typeof(JumpState), Time.unscaledTime));
+            _inputBuffer.Add(new InputBufferData(typeof(JumpState), Time.unscaledTime));
             debuggingInputBuffer.Add(new InputBufferData(typeof(JumpState), Time.unscaledTime));
         }
 
@@ -149,16 +149,21 @@ namespace CharacterControl
         {
             lockOnOff = newLockState;
         }
-
+        
+        // InputBuffer에도 우선순위가 따로 있는데
+        // 공격 중 추가 공격
+        // 아이템 사용 중 추가 사용 (물약 2번 연속으로 빨기)
+        // 차지 공격
+        
         private void LeftAttackInput()
         {
-            _inputBuffer.Enqueue(new InputBufferData(typeof(LeftAttackState), Time.unscaledTime));
+            _inputBuffer.Add(new InputBufferData(typeof(LeftAttackState), Time.unscaledTime));
             debuggingInputBuffer.Add(new InputBufferData(typeof(LeftAttackState), Time.unscaledTime));
         }
         
         private void RightAttackInput()
         {
-            _inputBuffer.Enqueue(new InputBufferData(typeof(RightAttackState), Time.unscaledTime));
+            _inputBuffer.Add(new InputBufferData(typeof(RightAttackState), Time.unscaledTime));
             debuggingInputBuffer.Add(new InputBufferData(typeof(RightAttackState), Time.unscaledTime));
         }
 
@@ -166,7 +171,7 @@ namespace CharacterControl
         {
             if (newAttackState)
             {
-                _inputBuffer.Enqueue(new InputBufferData(typeof(StrongAttackState), Time.unscaledTime));
+                _inputBuffer.Add(new InputBufferData(typeof(StrongAttackState), Time.unscaledTime));
                 debuggingInputBuffer.Add(new InputBufferData(typeof(StrongAttackState), Time.unscaledTime));
             }
             else
@@ -189,13 +194,13 @@ namespace CharacterControl
 
         private void LeftHandChangeInput()
         {
-            _inputBuffer.Enqueue(new InputBufferData(typeof(LeftHandChangeState), Time.unscaledTime));
+            _inputBuffer.Add(new InputBufferData(typeof(LeftHandChangeState), Time.unscaledTime));
             debuggingInputBuffer.Add(new InputBufferData(typeof(LeftHandChangeState), Time.unscaledTime));
         }
 
         private void RightHandChangeInput()
         {
-            _inputBuffer.Enqueue(new InputBufferData(typeof(RightHandChangeState), Time.unscaledTime));
+            _inputBuffer.Add(new InputBufferData(typeof(RightHandChangeState), Time.unscaledTime));
             debuggingInputBuffer.Add(new InputBufferData(typeof(RightHandChangeState), Time.unscaledTime));
         }
 
@@ -204,11 +209,12 @@ namespace CharacterControl
         {
             while (true)
             {
-                if (_inputBuffer.TryPeek(out var bufferData))
+                if (_inputBuffer.Count > 0)
                 {
+                    var bufferData = _inputBuffer[0];
                     if (bufferData.pressedTime + inputBufferThreshold < Time.unscaledTime)
                     {
-                        _inputBuffer.Dequeue();
+                        _inputBuffer.RemoveAt(0);
                         debuggingInputBuffer.RemoveAt(0);
                         continue;
                     }
@@ -220,7 +226,12 @@ namespace CharacterControl
 
         public InputBufferData TryDeQueue()
         {
-            _inputBuffer.TryDequeue(out var inputBufferData);
+            InputBufferData inputBufferData = default;
+            if (_inputBuffer.Count > 0)
+            {
+                inputBufferData = _inputBuffer[0];
+                _inputBuffer.RemoveAt(0);
+            }
             return inputBufferData;
         }
         
@@ -229,19 +240,29 @@ namespace CharacterControl
             if (!HasBuffer()) throw new Exception("InputBuffer is Empty");
             debuggingInputBuffer.RemoveAt(0);
             // Debug.Log($"{string.Join(", ", _inputBuffer.Select(item => item.Type))}");
-            return _inputBuffer.Dequeue();
+
+            var inputBufferData = _inputBuffer[0];
+            _inputBuffer.RemoveAt(0);
+            
+            return inputBufferData;
         }
 
         public InputBufferData Peek()
         {
             if (!HasBuffer()) throw new Exception("InputBuffer is Empty");
-            return _inputBuffer.Peek();
+            return _inputBuffer[0];
         }
         
         public bool HasBuffer()
         {
             //Debug.Log(_inputBuffer.Count);
             return _inputBuffer.Count > 0;
+        }
+
+        public bool TryRemove<T>() where T : BaseActionState
+        {
+            int removeCount = _inputBuffer.RemoveAll(item => item.Type == typeof(T));
+            return removeCount > 0;
         }
     }
 }

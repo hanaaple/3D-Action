@@ -1,28 +1,32 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
+using Item;
 using Model;
+using UnityEngine;
 using UnityEngine.InputSystem.Utilities;
 
 namespace ViewModel
 {
     // 장착 아이템 ViewModel
+    [Serializable]
     public class EquipViewModel : INotifyPropertyChanged
     {
         private EquippedItemData _equippedItemData;
 
+        [SerializeField] private EquippedItemData initDataForTest;
+        
         public event PropertyChangedEventHandler PropertyChanged;
         
-        public Item.Item[] Lefts
+        public Weapon[] Lefts
         {
-            get;
-            set;
+            get => _equippedItemData.lefts;
         }
         
-        public Item.Item[] Rights
+        public Weapon[] Rights
         {
-            get;
-            set;
+            get => _equippedItemData.rights;
         }
 
         private Item.Item[] Tools
@@ -51,18 +55,39 @@ namespace ViewModel
         
         public void Initialize(EquippedItemData equippedItemData)
         {
-            _equippedItemData = equippedItemData;
+            _equippedItemData = initDataForTest ?? equippedItemData;
+            
             _equippedItemData.PropertyChanged += (send, e) => OnPropertyChanged(e.PropertyName);
-        }
 
-        public Item.Item GetCurrentLeftWeapon()
+            // 임시 초기화, 데이터 로드 시, 일괄적으로 초기화 예정
+            _equippedItemData.OnPropertyChanged();
+        }
+        
+        /// <returns> if return null, it's bare hands</returns>
+        public Weapon GetCurrentLeftWeapon()
         {
+            if (Lefts[LeftIndex].weaponData == null)
+            {
+                return null;
+            }
+
             return Lefts[LeftIndex];
         }
         
-        public Item.Item GetCurrentRightWeapon()
+        /// <returns> if return null, it's bare hands</returns>
+        public Weapon GetCurrentRightWeapon()
         {
+            if (Rights[RightIndex].weaponData == null)
+            {
+                return null;
+            }
+            
             return Rights[RightIndex];
+        }
+
+        public Item.Item GetCurrentTool()
+        {
+            return Tools[ToolIndex];
         }
         
         public ReadOnlyArray<Item.Item> GetTools(int maxCount)
@@ -78,7 +103,7 @@ namespace ViewModel
                     items.Add(Tools[index]);
                 }
                 
-                index = (index + 1) % items.Count;
+                index = (index + 1) % Tools.Length;
             }
             while (ToolIndex != index && items.Count < maxCount);
             return items.ToArray();

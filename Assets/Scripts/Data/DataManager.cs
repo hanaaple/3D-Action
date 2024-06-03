@@ -1,5 +1,6 @@
 ﻿using System;
 using Model;
+using UnityEngine;
 using ViewModel;
 
 namespace Data
@@ -20,22 +21,11 @@ namespace Data
     
     
     [Serializable]
-    public class DataManager
+    public class DataManager : MonoBehaviour
     {
         private static DataManager _instance;
 
-        public static DataManager instance
-        {
-            get
-            {
-                if (_instance == null)
-                {
-                    _instance = new DataManager();
-                }
-
-                return _instance;
-            }
-        }
+        public static DataManager instance => _instance;
 
         public LevelUpTable LevelUpTable;
         
@@ -44,12 +34,17 @@ namespace Data
         public StatusViewModel statusViewModel { get; private set; }
         public DescribeViewModel describeViewModel { get; private set; }
         public PlayerDataViewModel playerDataViewModel { get; private set; }
+        [field: SerializeField]
         public EquipViewModel equipViewModel { get; private set; }
-
-        private DataManager()
+        public OwnedItemViewModel ownedItemViewModel { get; private set; }
+        
+        private void Awake()
         {
+            if(_instance == null)
+                _instance = this;
+            
             StatusData statusData = new StatusData();
-            EquippedItemData equippedItemData = new EquippedItemData();
+            EquippedItemData equippedItemData = new EquippedItemData(4, 4, 4, 4, 4);
             OwnedItemData ownedItemData = new OwnedItemData();
             PlayerData playerData = new PlayerData();
 
@@ -60,10 +55,13 @@ namespace Data
             describeViewModel.Initialize();
 
             playerDataViewModel = new PlayerDataViewModel();
-            playerDataViewModel.Initialize(equippedItemData, statusData);
+            playerDataViewModel.Initialize(playerData, equippedItemData, statusData);
 
-            equipViewModel = new EquipViewModel();
+            equipViewModel ??= new EquipViewModel();
             equipViewModel.Initialize(equippedItemData);
+
+            ownedItemViewModel = new OwnedItemViewModel();
+            ownedItemViewModel.Initialize(ownedItemData);
         }
     }
 }
