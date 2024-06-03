@@ -30,8 +30,8 @@ namespace View
             var equipViewModel = DataManager.instance.equipViewModel;
             
             // 현재 WeaponIndex의 아이템을 보여준다. 아이템이 Null(맨 손)인 경우 빈 슬롯을 보여준다.
-            rightHandSlot.DisplaySlotUI(equipViewModel.GetCurrentRightWeapon());
-            leftHandSlot.DisplaySlotUI(equipViewModel.GetCurrentLeftWeapon());
+            rightHandSlot.DisplaySlotUI(equipViewModel.GetCurrentRightWeapon().weaponData);
+            leftHandSlot.DisplaySlotUI(equipViewModel.GetCurrentLeftWeapon().weaponData);
             
             // 현재 ToolIndex부터 시작해서 1 ~ 3개의 Tool을 보여준다.
             toolSlots.DisplaySlotUI(equipViewModel.GetTools(toolSlots.GetCount()));

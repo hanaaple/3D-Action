@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
+using Item;
 using Model;
 using UnityEngine.InputSystem.Utilities;
 
@@ -13,16 +14,14 @@ namespace ViewModel
 
         public event PropertyChangedEventHandler PropertyChanged;
         
-        public Item.Item[] Lefts
+        public Weapon[] Lefts
         {
-            get;
-            set;
+            get => _equippedItemData.lefts;
         }
         
-        public Item.Item[] Rights
+        public Weapon[] Rights
         {
-            get;
-            set;
+            get => _equippedItemData.rights;
         }
 
         private Item.Item[] Tools
@@ -55,12 +54,12 @@ namespace ViewModel
             _equippedItemData.PropertyChanged += (send, e) => OnPropertyChanged(e.PropertyName);
         }
 
-        public Item.Item GetCurrentLeftWeapon()
+        public Weapon GetCurrentLeftWeapon()
         {
             return Lefts[LeftIndex];
         }
         
-        public Item.Item GetCurrentRightWeapon()
+        public Weapon GetCurrentRightWeapon()
         {
             return Rights[RightIndex];
         }
@@ -78,7 +77,7 @@ namespace ViewModel
                     items.Add(Tools[index]);
                 }
                 
-                index = (index + 1) % items.Count;
+                index = (index + 1) % Tools.Length;
             }
             while (ToolIndex != index && items.Count < maxCount);
             return items.ToArray();

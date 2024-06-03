@@ -1,12 +1,16 @@
-﻿using UnityEngine;
+﻿using System;
+using Data;
 
 namespace Item
 {
-    [CreateAssetMenu(fileName = "Weapon", menuName = "Item/Weapon")]
-    public class Weapon : Item
+    [Serializable]
+    public class Weapon
     {
-        public GameObject prefab;
-        public Vector3 positionOffset;
-        public Vector3 rotationOffset;
+        // 기본 데이터
+        public WeaponData weaponData;
+
+        // 추가 데이터
+        public int weaponEnhancementValue;
+        // 인챈트 상태
     }
 }
