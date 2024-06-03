@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 12649513b736adb47b003c90e6d17b13
+guid: aea4d828b6c3cdf43a54d9e9b1b14a5b
 ModelImporter:
   serializedVersion: 22200
   internalIDToNameTable: []
@@ -33,11 +33,11 @@ ModelImporter:
     extraUserProperties: []
     clipAnimations:
     - serializedVersion: 16
-      name: Equip Over Shoulder
+      name: Attack 3
       takeName: mixamo.com
       internalID: -203655887218126122
-      firstFrame: 0
-      lastFrame: 50
+      firstFrame: 10
+      lastFrame: 60
       wrapMode: 0
       orientationOffsetY: 0
       level: 0
@@ -54,45 +54,30 @@ ModelImporter:
       keepOriginalPositionXZ: 0
       heightFromFeet: 0
       mirror: 0
-      bodyMask: 00000000010000000100000000000000000000000000000001000000000000000100000000000000000000000000000001000000
+      bodyMask: 01000000010000000100000001000000010000000000000001000000000000000100000001000000010000000000000001000000
       curves: []
       events:
-      - time: 0.4947644
-        functionName: ChangeWeapon
+      - time: 0.248632
+        functionName: SetRotationEnable
         data: 
         objectReferenceParameter: {instanceID: 0}
         floatParameter: 0
         intParameter: 0
         messageOptions: 0
-      transformMask: []
-      maskType: 3
-      maskSource: {instanceID: 0}
-      additiveReferencePoseFrame: 0
-    - serializedVersion: 16
-      name: Grip
-      takeName: mixamo.com
-      internalID: 4061839508520268033
-      firstFrame: 18.7
-      lastFrame: 50
-      wrapMode: 0
-      orientationOffsetY: 0
-      level: 0
-      cycleOffset: 0
-      loop: 0
-      hasAdditiveReferencePose: 0
-      loopTime: 0
-      loopBlend: 0
-      loopBlendOrientation: 1
-      loopBlendPositionY: 1
-      loopBlendPositionXZ: 1
-      keepOriginalOrientation: 0
-      keepOriginalPositionY: 1
-      keepOriginalPositionXZ: 0
-      heightFromFeet: 0
-      mirror: 0
-      bodyMask: 00000000000000000000000000000000000000000000000000000000000000000100000000000000000000000000000001000000
-      curves: []
-      events: []
+      - time: 0.42942345
+        functionName: SetRotationDisable
+        data: 
+        objectReferenceParameter: {instanceID: 0}
+        floatParameter: 0
+        intParameter: 0
+        messageOptions: 0
+      - time: 0
+        functionName: SetComboDisable
+        data: 
+        objectReferenceParameter: {instanceID: 0}
+        floatParameter: 0
+        intParameter: 0
+        messageOptions: 0
       transformMask: []
       maskType: 3
       maskSource: {instanceID: 0}

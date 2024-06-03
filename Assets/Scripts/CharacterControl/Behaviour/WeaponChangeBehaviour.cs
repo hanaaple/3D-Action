@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace CharacterControl.Behaviour
 {
-    public class ShoulderWeaponBehaviour : StateMachineBehaviour
+    public class WeaponChangeBehaviour : StateMachineBehaviour
     {
         public override void OnStateExit(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
         {
