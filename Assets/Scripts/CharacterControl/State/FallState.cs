@@ -3,7 +3,7 @@
     // Manage Fall to Land
     public class FallState : BaseActionState
     {
-        public FallState(ThirdPlayerController controller) : base(controller)
+        public FallState(PlayerContext playerContext) : base(playerContext)
         {
         }
 

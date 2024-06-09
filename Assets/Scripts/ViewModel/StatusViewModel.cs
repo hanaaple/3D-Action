@@ -1,12 +1,12 @@
 ﻿using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using Data;
-using Model;
+using Data.Play;
 
 namespace ViewModel
 {
     // 플레이어 스탯 ViewModel
-    public class StatusViewModel : INotifyPropertyChanged
+    public sealed class StatusViewModel : INotifyPropertyChanged
     {
         private StatusData _statusData;
         
@@ -66,13 +66,16 @@ namespace ViewModel
             _statusData = statusData;
             _statusData.PropertyChanged += (send, e) => OnPropertyChanged(e.PropertyName);
         }
-        
+
         public bool IsLevelUpPossible()
         {
+            if (DataManager.instance.LevelUpTable == null)
+                return false;
+            
             return DataManager.instance.LevelUpTable.CanLevelUp(_statusData.Level);
         }
 
-        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        private void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }

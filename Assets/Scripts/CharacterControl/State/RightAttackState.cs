@@ -1,4 +1,6 @@
 ﻿using Data;
+using Data.PlayItem;
+using Data.Static.Scriptable;
 using UnityEngine;
 using Util;
 
@@ -9,50 +11,53 @@ namespace CharacterControl.State
         private bool _isRotateEnable;
         private bool _isComboEnable;
         private int _comboCount;
-        
+
         private readonly int _animIdAttackCombo = Animator.StringToHash("AttackCombo");
         private readonly int _animIdRightAttack = Animator.StringToHash("RightAttack");
         private readonly int _animIdAttackMotionSpeed = Animator.StringToHash("AttackMotionSpeed");
 
-        public RightAttackState(ThirdPlayerController controller) : base(controller)
+        public RightAttackState(PlayerContext playerContext) : base(playerContext)
         {
         }
 
         private void Attack()
         {
-            Controller.Animator.applyRootMotion = true;
-            
+            PlayerContext.Controller.Animator.applyRootMotion = true;
+
             _isRotateEnable = false;
             _isComboEnable = false;
-            
+
             if (_comboCount == 0)
             {
-                Controller.Animator.SetTrigger(_animIdRightAttack);
+                PlayerContext.Controller.Animator.SetTrigger(_animIdRightAttack);
             }
 
-            Controller.Animator.SetInteger(_animIdAttackCombo, _comboCount);
+            PlayerContext.Controller.Animator.SetInteger(_animIdAttackCombo, _comboCount);
         }
-        
+
         public override void OnEnterState(ActionStateMachine stateMachine)
         {
-            var animationEventHandler = Controller.GetComponent<AnimationEventHandler>();
+            var animationEventHandler = PlayerContext.Controller.GetComponent<AnimationEventHandler>();
             animationEventHandler.OnRotationEnableChanged += SetRotationEnable;
             animationEventHandler.OnComboEnableChanged += SetComboEnable;
-            
+
             _comboCount = 0;
-            
-            var weapon = DataManager.instance.equipViewModel.GetCurrentRightWeapon();
-            
+
+            var weapon = DataManager.instance.playerEquipViewModel.GetCurrentRightWeapon();
+
             // 맨손
-            if (weapon == null)
+            if (weapon.IsNullOrEmpty())
             {
-                Controller.Animator.runtimeAnimatorController = Controller.OriginalAnimatorController;
-                Controller.Animator.SetFloat(_animIdAttackMotionSpeed, 1);
+                PlayerContext.Controller.Animator.runtimeAnimatorController =
+                    PlayerContext.Controller.OriginalAnimatorController;
+                PlayerContext.Controller.Animator.SetFloat(_animIdAttackMotionSpeed, 1);
             }
             else
             {
-                Controller.Animator.runtimeAnimatorController = weapon.weaponData.runtimeAnimatorController;
-                Controller.Animator.SetFloat(_animIdAttackMotionSpeed, weapon.weaponData.attackMotionSpeed);
+                PlayerContext.Controller.Animator.runtimeAnimatorController =
+                    ((WeaponData)weapon.GetItemData()).runtimeAnimatorController;
+                PlayerContext.Controller.Animator.SetFloat(_animIdAttackMotionSpeed,
+                    ((WeaponData)weapon.GetItemData()).attackMotionSpeed);
             }
 
             Attack();
@@ -61,11 +66,11 @@ namespace CharacterControl.State
         // AttackBehaviour에 의해 종료
         public override void OnExitState(ActionStateMachine stateMachine)
         {
-            var animationEventHandler = Controller.GetComponent<AnimationEventHandler>();
+            var animationEventHandler = PlayerContext.Controller.GetComponent<AnimationEventHandler>();
             animationEventHandler.OnRotationEnableChanged -= SetRotationEnable;
             animationEventHandler.OnComboEnableChanged -= SetComboEnable;
-            
-            Controller.Animator.applyRootMotion = false;
+
+            PlayerContext.Controller.Animator.applyRootMotion = false;
         }
 
         // 같은 종류의 무기 (연계 공격이 가능한) 타입의 경우 -> 연계 공격 (무기 2개로 공격하는?)
@@ -76,16 +81,16 @@ namespace CharacterControl.State
             if (_isRotateEnable)
             {
                 // 현재 누르고 있는 방향으로 회전 (빠르게 Smooth)
-                Controller.Rotate();
+                PlayerContext.Controller.Rotate();
             }
-            
+
             // m초 ~ end 사이에 추가 공격 입력이 들어온 경우
             if (_isComboEnable)
             {
                 // 좌 우 번갈아가는 콤보 공격은 없음
-                
+
                 // Check InputBuffer
-                if (Controller.TryGetInput<RightAttackState>())
+                if (PlayerContext.Controller.TryGetInput<RightAttackState>())
                 {
                     // 콤보 공격
                     _comboCount++;
@@ -104,19 +109,19 @@ namespace CharacterControl.State
             if (stateMachine.IsTypeEqualToCurrentState(typeof(IdleState))
                 // || stateMachine.IsTypeEqualToCurrentState(typeof(AttackState))
                 // || stateMachine.IsTypeEqualToCurrentState(typeof(StrongAttackState))
-                )
+               )
             {
                 return true;
             }
-            
+
             return false;
         }
-        
+
         private void SetRotationEnable(bool isRotateEnable)
         {
             _isRotateEnable = isRotateEnable;
         }
-        
+
         private void SetComboEnable(bool isComboEnable)
         {
             _isComboEnable = isComboEnable;

@@ -3,7 +3,7 @@
     // Include Locomotion (Idle, Move, Run, Falling)
     public class IdleState : BaseActionState
     {
-        public IdleState(ThirdPlayerController controller) : base(controller)
+        public IdleState(PlayerContext playerContext) : base(playerContext)
         {
         }
 
@@ -17,14 +17,14 @@
 
         public override void Update(ActionStateMachine stateMachine, bool isOnChange = false)
         {
-            if (!isOnChange && Controller.TryChangeStateByInput(stateMachine))
+            if (!isOnChange && stateMachine.TryChangeStateByInput())
             {
                 return;
             }
             
-            Controller.UpdateSpeed();
-            Controller.Rotate();
-            Controller.Translate();
+            PlayerContext.Controller.UpdateSpeed();
+            PlayerContext.Controller.Rotate();
+            PlayerContext.Controller.Translate();
         }
 
         public override void LateUpdate(ActionStateMachine stateMachine)

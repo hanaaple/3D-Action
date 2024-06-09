@@ -6,18 +6,18 @@ namespace CharacterControl.State
     {
         private readonly int _animIdRoll = Animator.StringToHash("Roll");
 
-        public RollState(ThirdPlayerController controller) : base(controller)
+        public RollState(PlayerContext playerContext) : base(playerContext)
         {
         }
 
         // Roll
         public override void OnEnterState(ActionStateMachine stateMachine)
         {
-            Controller.RotateImmediately();
+            PlayerContext.Controller.RotateImmediately();
 
-            Controller.MoveSpeed = Controller.rollSpeed;
+            PlayerContext.Controller.MoveSpeed = PlayerContext.Controller.rollSpeed;
 
-            Controller.Animator?.SetTrigger(_animIdRoll);
+            PlayerContext.Controller.Animator?.SetTrigger(_animIdRoll);
         }
 
         public override void OnExitState(ActionStateMachine stateMachine)
@@ -26,7 +26,7 @@ namespace CharacterControl.State
 
         public override void Update(ActionStateMachine stateMachine, bool isOnChange = false)
         {
-            Controller.Translate();
+            PlayerContext.Controller.Translate();
         }
 
         public override void LateUpdate(ActionStateMachine stateMachine)
@@ -35,8 +35,8 @@ namespace CharacterControl.State
 
         public override bool StateChangeEnable(ActionStateMachine stateMachine)
         {
-            if (Controller.IsGrounded && stateMachine.IsTypeEqualToCurrentState(typeof(IdleState)) &&
-                Controller.RollTimeoutDelta <= 0.0f)
+            if (PlayerContext.Controller.IsGrounded && stateMachine.IsTypeEqualToCurrentState(typeof(IdleState)) &&
+                PlayerContext.Controller.RollTimeoutDelta <= 0.0f)
             {
                 return true;
             }

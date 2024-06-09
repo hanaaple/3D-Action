@@ -24,25 +24,22 @@ namespace CharacterControl
 
     public class InputStateHandler : MonoBehaviour
     {
-        [Header("Character Input Values")]
-        public Vector2 move;
+        [Header("Character Input Values")] public Vector2 move;
         public Vector2 look;
         public bool run;
         public bool crouch;
         public bool lockOnOff;
 
-        [Header("Movement Settings")]
-        public bool analogMovement;
+        [Header("Movement Settings")] public bool analogMovement;
 
-        [Header("Mouse Cursor Settings")]
-        public bool cursorLocked = true;
+        [Header("Mouse Cursor Settings")] public bool cursorLocked = true;
         public bool cursorInputForLook = true;
 
         public float inputBufferThreshold = 0.5f;
 
         // 입력된 시간
         private readonly List<InputBufferData> _inputBuffer = new();
-        
+
         // 추후 디버깅 가능한 Queue 구현
         [SerializeField] private List<InputBufferData> debuggingInputBuffer;
 
@@ -89,7 +86,7 @@ namespace CharacterControl
         {
             LeftAttackInput();
         }
-        
+
         public void OnRightAttack(InputValue value)
         {
             RightAttackInput();
@@ -109,8 +106,12 @@ namespace CharacterControl
         {
             LeftHandChangeInput();
         }
-#endif
 
+        public void OnDecision()
+        {
+            DecisionInput();
+        }
+#endif
 
         private void MoveInput(Vector2 newMoveDirection)
         {
@@ -149,18 +150,18 @@ namespace CharacterControl
         {
             lockOnOff = newLockState;
         }
-        
+
         // InputBuffer에도 우선순위가 따로 있는데
         // 공격 중 추가 공격
         // 아이템 사용 중 추가 사용 (물약 2번 연속으로 빨기)
         // 차지 공격
-        
+
         private void LeftAttackInput()
         {
             _inputBuffer.Add(new InputBufferData(typeof(LeftAttackState), Time.unscaledTime));
             debuggingInputBuffer.Add(new InputBufferData(typeof(LeftAttackState), Time.unscaledTime));
         }
-        
+
         private void RightAttackInput()
         {
             _inputBuffer.Add(new InputBufferData(typeof(RightAttackState), Time.unscaledTime));
@@ -204,6 +205,12 @@ namespace CharacterControl
             debuggingInputBuffer.Add(new InputBufferData(typeof(RightHandChangeState), Time.unscaledTime));
         }
 
+        private void DecisionInput()
+        {
+            _inputBuffer.Add(new InputBufferData(typeof(InteractionState), Time.unscaledTime));
+            debuggingInputBuffer.Add(new InputBufferData(typeof(InteractionState), Time.unscaledTime));
+        }
+
         // Set Script Order 앞으로
         private void Update()
         {
@@ -232,9 +239,10 @@ namespace CharacterControl
                 inputBufferData = _inputBuffer[0];
                 _inputBuffer.RemoveAt(0);
             }
+
             return inputBufferData;
         }
-        
+
         public InputBufferData DeQueue()
         {
             if (!HasBuffer()) throw new Exception("InputBuffer is Empty");
@@ -243,7 +251,7 @@ namespace CharacterControl
 
             var inputBufferData = _inputBuffer[0];
             _inputBuffer.RemoveAt(0);
-            
+
             return inputBufferData;
         }
 
@@ -252,7 +260,19 @@ namespace CharacterControl
             if (!HasBuffer()) throw new Exception("InputBuffer is Empty");
             return _inputBuffer[0];
         }
-        
+
+        public bool TryPeek(out InputBufferData inputBufferData)
+        {
+            if (HasBuffer())
+            {
+                inputBufferData = _inputBuffer[0];
+                return true;
+            }
+
+            inputBufferData = default;
+            return false;
+        }
+
         public bool HasBuffer()
         {
             //Debug.Log(_inputBuffer.Count);
