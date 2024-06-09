@@ -2,7 +2,7 @@
 {
     public class StrongAttackState : BaseActionState
     {
-        public StrongAttackState(ThirdPlayerController controller) : base(controller)
+        public StrongAttackState(PlayerContext playerContext) : base(playerContext)
         {
         }
 

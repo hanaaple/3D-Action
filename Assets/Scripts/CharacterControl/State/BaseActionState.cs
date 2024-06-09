@@ -2,11 +2,11 @@
 {
     public abstract class BaseActionState
     {
-        internal readonly ThirdPlayerController Controller;
+        protected readonly PlayerContext PlayerContext;
 
-        protected BaseActionState(ThirdPlayerController controller)
+        protected BaseActionState(PlayerContext playerContext)
         {
-            Controller = controller;
+            PlayerContext = playerContext;
         }
 
         // this execution order is slower than Controller

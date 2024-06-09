@@ -114,9 +114,9 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "ChangeItem",
+                    "name": "Decision",
                     "type": "Button",
-                    "id": "a84aacde-ac02-42e6-9371-0a1f539ed62e",
+                    "id": "818e51a7-ce93-4245-9ea2-0c6d8da89511",
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "",
@@ -127,7 +127,7 @@
                 {
                     "name": "",
                     "id": "6cff2f2f-c22a-4a4b-962f-358e9c23bb52",
-                    "path": "<Keyboard>/space",
+                    "path": "<Keyboard>/f",
                     "interactions": "",
                     "processors": "",
                     "groups": "PC",
@@ -248,7 +248,7 @@
                 {
                     "name": "",
                     "id": "1ca7e571-1b84-4d17-8490-f052dcc84147",
-                    "path": "<Keyboard>/c",
+                    "path": "<Keyboard>/space",
                     "interactions": "",
                     "processors": "",
                     "groups": "PC",
@@ -324,12 +324,12 @@
                 },
                 {
                     "name": "",
-                    "id": "34920fe1-1e2d-43b9-9f68-9bfaac631630",
-                    "path": "<Keyboard>/downArrow",
+                    "id": "df8d199f-1a79-4e02-a46e-3dfc4f8ca45a",
+                    "path": "<Keyboard>/e",
                     "interactions": "",
                     "processors": "",
                     "groups": "PC",
-                    "action": "ChangeItem",
+                    "action": "Decision",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
@@ -432,33 +432,6 @@
             "id": "23bac7a9-7b1d-4e65-b202-89a2a6a77d3a",
             "actions": [
                 {
-                    "name": "Decision",
-                    "type": "Button",
-                    "id": "a31c35c4-bd81-48fb-9c66-2885f8a8750b",
-                    "expectedControlType": "Button",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": false
-                },
-                {
-                    "name": "Close",
-                    "type": "Button",
-                    "id": "489cab10-5871-4d97-902b-552cad3affda",
-                    "expectedControlType": "Button",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": false
-                },
-                {
-                    "name": "Esc",
-                    "type": "Button",
-                    "id": "d7bc91a5-0616-4439-a3fc-52893b5f0919",
-                    "expectedControlType": "Button",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": false
-                },
-                {
                     "name": "ChangeRightWeapon",
                     "type": "Button",
                     "id": "9fea9c05-1c07-4ea0-a540-b34ddf72749d",
@@ -475,42 +448,63 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
+                },
+                {
+                    "name": "ChangeItem",
+                    "type": "Button",
+                    "id": "b7e46d62-c4ce-40b1-b91d-5739d99782ed",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Esc",
+                    "type": "Button",
+                    "id": "f7b784da-c49f-47d5-b974-78fdf98dd3c9",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Decision",
+                    "type": "Button",
+                    "id": "dbff2824-1430-48a3-bdef-dca6db629eb6",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Close",
+                    "type": "Button",
+                    "id": "77522ed0-ecc4-46fd-a1bf-be41b79a7834",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "SlotLeft",
+                    "type": "Button",
+                    "id": "ac7aa7d4-fd95-4645-9d23-d022f1370454",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "SlotRight",
+                    "type": "Button",
+                    "id": "bb56a363-3f74-40ee-9d2a-d2652bc42d35",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
-                {
-                    "name": "",
-                    "id": "d4ed8ad2-d825-4fe0-ae48-498d15026d86",
-                    "path": "<Keyboard>/q",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Decision",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "edbe8874-e05c-4614-a2c4-05576266e096",
-                    "path": "<Keyboard>/e",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Close",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "1f00be43-e59a-437e-911c-cd05ce1f53bc",
-                    "path": "<Keyboard>/escape",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "PC",
-                    "action": "Esc",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
                 {
                     "name": "",
                     "id": "80c9d673-2cd4-4cb3-a2c0-f625d6f075b6",
@@ -524,12 +518,78 @@
                 },
                 {
                     "name": "",
+                    "id": "5fa05bfe-1cb9-4899-b4be-53831d577af9",
+                    "path": "<Keyboard>/tab",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "PC",
+                    "action": "Esc",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "e64f71e3-71f9-47fc-8cae-11f17983ad66",
+                    "path": "<Keyboard>/q",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "PC",
+                    "action": "Close",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "f27c52c2-661f-4f5c-a257-769ac2bf68e2",
+                    "path": "<Keyboard>/e",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "PC",
+                    "action": "Decision",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "306be8e6-fd27-4c06-b4f1-46640d3dfe15",
+                    "path": "<Keyboard>/downArrow",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "PC",
+                    "action": "ChangeItem",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
                     "id": "5f09d6c3-3104-44f1-b229-1fffe74067f4",
                     "path": "<Keyboard>/leftArrow",
                     "interactions": "",
                     "processors": "",
                     "groups": "PC",
                     "action": "ChangeLeftWeapon",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "a5d6f2d5-540f-4e6c-b9c6-b174162a6a60",
+                    "path": "<Keyboard>/z",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "PC",
+                    "action": "SlotLeft",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "9e1fe4f0-b3fa-4daf-8eab-bbef0051a36a",
+                    "path": "<Keyboard>/x",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "PC",
+                    "action": "SlotRight",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

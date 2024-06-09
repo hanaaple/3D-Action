@@ -1,6 +1,8 @@
 ﻿using System;
-using Model;
+using CharacterControl;
+using Data.Static;
 using UnityEngine;
+using Util;
 using ViewModel;
 
 namespace Data
@@ -9,59 +11,73 @@ namespace Data
     // EquippedItemDataChange -> UpdatePlayView
     // EquippedItemDataChange -> EquipmentView
     // EquippedItemData -> PlayerDataChange -> UpdateStatusView
-        
+
     // 스탯 변화
     // StatusDataChange -> PlayerDataChange -> UpdateStatusView
-        
+
     // 계산되는 데이터
     // PlayerDataChange -> UpdatePlayerDataView
-        
+
     // 보유 중인 장비
     // OwnedItemDataChange -> UpdateInventoryView
-    
-    
+
     [Serializable]
     public class DataManager : MonoBehaviour
     {
         private static DataManager _instance;
-
         public static DataManager instance => _instance;
 
-        public LevelUpTable LevelUpTable;
-        
-        // 다른 데이터도
+        private Player _player;
 
-        public StatusViewModel statusViewModel { get; private set; }
-        public DescribeViewModel describeViewModel { get; private set; }
-        public PlayerDataViewModel playerDataViewModel { get; private set; }
-        [field: SerializeField]
-        public EquipViewModel equipViewModel { get; private set; }
-        public OwnedItemViewModel ownedItemViewModel { get; private set; }
-        
+        public StatusViewModel playerStatusViewModel => _player.statusViewModel;
+        public PlayerDataViewModel playerDataViewModel => _player.playerDataViewModel;
+        public EquipViewModel playerEquipViewModel => _player.equipViewModel;
+        public OwnedItemViewModel playerOwnedItemViewModel => _player.ownedItemViewModel;
+
+        public SelectedUIViewModel selectedUiViewModel { get; private set; }
+
+        public LevelUpTable LevelUpTable;
+
+        // Add Item -> Item 중에서 선택해서 EquipData.Equip 인데
+
         private void Awake()
         {
-            if(_instance == null)
+            if (_instance == null)
+            {
                 _instance = this;
-            
-            StatusData statusData = new StatusData();
-            EquippedItemData equippedItemData = new EquippedItemData(4, 4, 4, 4, 4);
-            OwnedItemData ownedItemData = new OwnedItemData();
-            PlayerData playerData = new PlayerData();
+                DontDestroyOnLoad(_instance);
+            }
+            else
+            {
+                Destroy(_instance);
+            }
 
-            statusViewModel = new StatusViewModel();
-            statusViewModel.Initialize(statusData);
+            _player = FindObjectOfType<Player>();
 
-            describeViewModel = new DescribeViewModel();
-            describeViewModel.Initialize();
+            LoadStaticData();
 
-            playerDataViewModel = new PlayerDataViewModel();
-            playerDataViewModel.Initialize(playerData, equippedItemData, statusData);
+            selectedUiViewModel = new SelectedUIViewModel();
+            selectedUiViewModel.Initialize();
 
-            equipViewModel ??= new EquipViewModel();
-            equipViewModel.Initialize(equippedItemData);
+            _player.LoadOrCreateData();
+        }
 
-            ownedItemViewModel = new OwnedItemViewModel();
-            ownedItemViewModel.Initialize(ownedItemData);
+        private void Start()
+        {
+            _player.BroadCastModelChange();
+        }
+
+        private void LoadStaticData()
+        {
+            // LevelUpTable = CsvReader.Load()
+            // StatValueTable
+            // DefaultPlayerDataTable
+        }
+
+        private void OnApplicationQuit()
+        {
+            var saveData = _player.GetSaveData();
+            SaveManager.Save(saveData);
         }
     }
 }

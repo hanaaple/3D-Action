@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7e5d73d766ff4e7e8700a78f03500c25, type: 3}
+  m_Name: Shoes A
+  m_EditorClassIdentifier: 
+  id: 0a849b1e-aeab-4ee4-aa7f-73f6dddd871d
+  itemName: "\uAC08\uC0C9 \uC2E0\uBC1C"
+  slotSprite: {fileID: 21300000, guid: 4a59607811bc1f9459591856511467a5, type: 3}
+  itemDescription: "\uB530\uB73B\uD55C \uAC00\uC8FD \uC2E0\uBC1C\uC774\uB2E4"
+  prefab: {fileID: 0}
+  positionOffset: {x: 0, y: 0, z: 0}
+  rotationOffset: {x: 0, y: 0, z: 0}
+  weight: 0
+  armorType: 3

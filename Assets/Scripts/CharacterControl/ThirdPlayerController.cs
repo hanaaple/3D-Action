@@ -1,6 +1,6 @@
-using System;
 using CharacterControl.State;
 using Data;
+using Data.PlayItem;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
@@ -12,38 +12,34 @@ namespace CharacterControl
         // 스탯 or 무게에 따라 변화하고 싶으면 모션 스피드, 이동 속도를 변화시켜야된다.
 
         // 기본 설정값 Field
-        [Header("Move")]
-        [SerializeField] private float moveSpeed = 2.0f; // 실제 움직이는 속도 및 애니메이션 속도
+        [Header("Move")] [SerializeField] private float moveSpeed = 2.0f; // 실제 움직이는 속도 및 애니메이션 속도
         [SerializeField] private float runSpeed = 5.335f; // 실제 움직이는 속도 및 애니메이션 속도
         [Range(0.0f, 0.3f)] [SerializeField] private float rotationSmoothTime = 0.12f;
         [SerializeField] private float speedChangeRate = 10.0f;
 
-        [Header("Audio")]
-        [SerializeField] private AudioClip rollingAudioClip;
+        [Header("Audio")] [SerializeField] private AudioClip rollingAudioClip;
         [SerializeField] private AudioClip landingAudioClip;
         [SerializeField] private AudioClip[] footstepAudioClips;
         [Range(0, 1)] [SerializeField] private float footstepAudioVolume = 0.5f;
         [Range(0, 1)] [SerializeField] private float rollingAudioVolume = 0.5f;
         [Range(0, 1)] [SerializeField] private float landingAudioVolume = 0.5f;
 
-        [Header("Roll")]
-        public float rollSpeed = 5f;
+        [Header("Roll")] public float rollSpeed = 5f;
         [SerializeField] private float rollMotionSpeed = 1f;
         [SerializeField] private float rollThreshold = 0f;
 
-        [Header("Jump")]
-        public float jumpHeight = 1.2f;
+        [Header("Jump")] public float jumpHeight = 1.2f;
         [SerializeField] private float jumpThreshold = 0.2f;
 
-        [Header("Gravity")]
-        public float gravity = -15.0f;
+        [Header("Gravity")] public float gravity = -15.0f;
         [SerializeField] private float fallThreshold = 0.15f;
 
-        [Header("Player Grounded")]
-        [SerializeField] private LayerMask groundLayers;
+        [Header("Player Grounded")] [SerializeField]
+        private LayerMask groundLayers;
 
-        [Header("Cinemachine")]
-        [SerializeField] private GameObject cinemachineCameraTarget;
+        [Header("Cinemachine")] [SerializeField]
+        private GameObject cinemachineCameraTarget;
+
         [SerializeField] private float topClamp = 70.0f;
         [SerializeField] private float bottomClamp = -30.0f;
         [Range(0.1f, 20)] [SerializeField] private float xAxisSensitivity = 1f;
@@ -63,7 +59,7 @@ namespace CharacterControl
         /// 현재 캐릭터 Forward 각도
         /// </summary>
         private float _targetRotation;
-        
+
         internal float VerticalVelocity;
         internal float MoveSpeed;
 
@@ -108,7 +104,7 @@ namespace CharacterControl
 
             // 만약 캐릭터가 순간이동한다면 업데이트 해줘야됨
             _targetRotation = transform.eulerAngles.y;
-            
+
             OriginalAnimatorController = Animator.runtimeAnimatorController;
         }
 
@@ -237,6 +233,7 @@ namespace CharacterControl
             {
                 MoveSpeed = Mathf.Lerp(currentHorizontalSpeed, targetSpeed * inputMagnitude,
                     Time.deltaTime * speedChangeRate);
+
                 MoveSpeed = Mathf.Round(MoveSpeed * 1000f) / 1000f;
             }
             else
@@ -284,68 +281,6 @@ namespace CharacterControl
         {
             return _inputStateHandler.TryRemove<T>();
         }
-        
-        public bool TryChangeStateByInput(ActionStateMachine stateMachine)
-        {
-            if (!ChangeStateEnableByInput(stateMachine))
-            {
-                return false;
-            }
-
-            var bufferData = _inputStateHandler.DeQueue();
-
-            stateMachine.ChangeState(bufferData.Type, true);
-
-            return true;
-        }
-
-        public void ChangeStateByInputOrIdle(ActionStateMachine stateMachine)
-        {
-            Type stateType;
-            if (_inputStateHandler.HasBuffer())
-            {
-                var bufferData = _inputStateHandler.Peek();
-                stateType = bufferData.Type;
-            }
-            else
-            {
-                stateType = typeof(IdleState);
-            }
-
-            if (ChangeStateEnable(stateMachine, stateType))
-            {
-                _inputStateHandler.TryDeQueue();
-                stateMachine.ChangeState(stateType, true);
-            }
-            else
-            {
-                // 에러는 아니지만, 해당 State를 실행할 수 없음.
-                if (stateMachine.IsDebug)
-                    Debug.LogWarning($"{stateType}을 실행할 수 없음");
-
-                stateMachine.ChangeState(typeof(IdleState), true);
-            }
-        }
-
-        private bool ChangeStateEnableByInput(ActionStateMachine stateMachine)
-        {
-            if (!_inputStateHandler.HasBuffer()) return false;
-            var bufferData = _inputStateHandler.Peek();
-
-            return ChangeStateEnable(stateMachine, bufferData.Type);
-        }
-
-        private static bool ChangeStateEnable(ActionStateMachine stateMachine, Type type)
-        {
-            var state = stateMachine.GetState(type);
-
-            if (state.StateChangeEnable(stateMachine))
-            {
-                return true;
-            }
-
-            return false;
-        }
 
         private static float ClampAngle(float value, float min, float max)
         {
@@ -385,11 +320,9 @@ namespace CharacterControl
 
         public void ChangeLeftWeapon(AnimationEvent animationEvent)
         {
-            Debug.LogWarning($"ChangeWeapon!");
-
-            var equipViewModel = DataManager.instance.equipViewModel;
+            var equipViewModel = DataManager.instance.playerEquipViewModel;
             equipViewModel.SetLeftWeaponIndexNext();
-            
+
             // 장착 여부에 따라
             if (equipViewModel.GetCurrentLeftWeapon() != null)
             {
@@ -403,14 +336,12 @@ namespace CharacterControl
 
         public void ChangeRightWeapon(AnimationEvent animationEvent)
         {
-            Debug.LogWarning($"ChangeWeapon!");
-
-            var equipViewModel = DataManager.instance.equipViewModel;
+            var equipViewModel = DataManager.instance.playerEquipViewModel;
             equipViewModel.SetRightWeaponIndexNext();
 
             // Invoke work Immediately?
             // 장착 여부에 따라
-            if (equipViewModel.GetCurrentRightWeapon() != null)
+            if (equipViewModel.GetCurrentRightWeapon().IsNullOrEmpty())
             {
                 Animator.SetBool(_animIdRightGrip, true);
             }

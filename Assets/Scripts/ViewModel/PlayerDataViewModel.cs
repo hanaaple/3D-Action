@@ -1,15 +1,13 @@
 ﻿using System.ComponentModel;
 using System.Runtime.CompilerServices;
-using Model;
+using Data.Play;
 
 namespace ViewModel
 {
     // 플레이어 데이터(HP, MP, 공격력 등) ViewModel
-    public class PlayerDataViewModel : INotifyPropertyChanged
+    public sealed class PlayerDataViewModel : INotifyPropertyChanged
     {
         private PlayerData _playerData;
-        private EquippedItemData _equippedItemData;
-        private StatusData _statusData;
         
         public event PropertyChangedEventHandler PropertyChanged;
         
@@ -78,14 +76,8 @@ namespace ViewModel
         public void Initialize(PlayerData playerData, EquippedItemData equippedItemData, StatusData statusData)
         {
             _playerData = playerData;
-            _equippedItemData = equippedItemData;
-            _statusData = statusData;
-            
-            _equippedItemData.PropertyChanged += (send, e) => OnPropertyChanged(e.PropertyName);
-            _statusData.PropertyChanged += (send, e) => OnPropertyChanged(e.PropertyName);
 
-            _equippedItemData.PropertyChanged += (send, e) => UpdatePlayerData();
-
+            equippedItemData.PropertyChanged += (send, e) => UpdatePlayerData();
             statusData.PropertyChanged += (send, e) => UpdatePlayerData();
         }
 
@@ -93,9 +85,11 @@ namespace ViewModel
         {
             // Attack = _equippedItemData.rights[_equippedItemData.RightIndex].attack + _statusData.Strength * 1;
             // Stamina = 
+
+            OnPropertyChanged();
         }
 
-        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        private void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
