@@ -1,4 +1,5 @@
 using CharacterControl.State;
+using CharacterControl.State.Base;
 using Data;
 using Data.PlayItem;
 using UnityEngine;

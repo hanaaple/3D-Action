@@ -6,7 +6,7 @@ using Util;
 
 namespace UI.Entity
 {
-    public class DebugInfo : MonoBehaviour
+    public class DebugInfoView : MonoBehaviour
     {
         [SerializeField] private Player player;
         [SerializeField] private ThirdPlayerController controller;

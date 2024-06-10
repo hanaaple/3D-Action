@@ -10,6 +10,9 @@ using UnityEngine.Pool;
 
 namespace CharacterControl
 {
+    /// <summary>
+    /// 장비 Instance 관리자
+    /// </summary>
     public class EquipmentInstanceManager : MonoBehaviour
     {
         private Item _leftWeapon;
@@ -25,7 +28,6 @@ namespace CharacterControl
 
         [SerializeField] private Player player;
 
-        // 중복 처리 안되어있습니다.
         // Item id, 해당 Item의 ObjectPool
         // <Item id, ObjectPool<GameObject>>
 

@@ -9,6 +9,10 @@ using UnityEngine;
 
 namespace UI.View.Inventory
 {
+    /// <summary>
+    /// 인벤토리 View의 Base
+    /// InventoryContainer Class를 Container로 사용하여 Container의 각 Slot을 보유 중인 아이템을 Display한다.
+    /// </summary>
     public abstract class BaseInventoryView : UIContainerEntity
     {
         // Container Slide

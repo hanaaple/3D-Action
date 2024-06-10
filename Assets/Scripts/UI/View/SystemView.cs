@@ -3,6 +3,9 @@ using UI.Entity.Base;
 
 namespace UI.View
 {
+    /// <summary>
+    /// System View
+    /// </summary>
     public class SystemView : UIContainerEntity
     {
         protected override void UpdateView()

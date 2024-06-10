@@ -2,9 +2,11 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace CharacterControl.State
+namespace CharacterControl.State.Base
 {
-    // State Pattern - Context
+    /// <summary>
+    /// State Pattern - Context
+    /// </summary>
     public class ActionStateMachine
     {
         private BaseActionState _currentBaseActionState;

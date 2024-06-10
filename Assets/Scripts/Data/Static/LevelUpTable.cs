@@ -3,6 +3,9 @@ using UnityEngine;
 
 namespace Data.Static
 {
+    /// <summary>
+    /// 레벨 별 필요한 경험치 테이블
+    /// </summary>
     public class LevelUpTable
     {
         public Dictionary<int, int> levelUpTable = new ();

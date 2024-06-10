@@ -1,4 +1,4 @@
-﻿namespace CharacterControl
+﻿namespace CharacterControl.State.Base
 {
     public class PlayerContext
     {

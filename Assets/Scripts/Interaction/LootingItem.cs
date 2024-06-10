@@ -14,6 +14,9 @@ namespace Interaction
         public T item;
     }
 
+    /// <summary>
+    /// 인터랙션 - 아이템 줍기
+    /// </summary>
     public class LootingItem : MonoBehaviour, IInteractable
     {
         [SerializeField] private Looting<Weapon, WeaponData>[] weapons;

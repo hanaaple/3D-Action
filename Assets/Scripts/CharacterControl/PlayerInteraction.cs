@@ -7,6 +7,9 @@ using UnityEngine;
 
 namespace CharacterControl
 {
+    /// <summary>
+    /// 플레이어 인터랙션 관리
+    /// </summary>
     public class PlayerInteraction : MonoBehaviour
     {
         [SerializeField] private GameObject interactionUIPanel;

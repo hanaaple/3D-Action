@@ -1,4 +1,6 @@
-﻿namespace CharacterControl.State
+﻿using CharacterControl.State.Base;
+
+namespace CharacterControl.State
 {
     // Manage Fall to Land
     public class FallState : BaseActionState

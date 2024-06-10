@@ -39,15 +39,12 @@ namespace UI.Entity.Selectable.Slot
             EditorGUILayout.PropertyField(_checkIconProperty);
             EditorGUILayout.PropertyField(_equipmentType);
             serializedObject.ApplyModifiedProperties();
-            
+
             EditorGUILayout.Space();
             base.OnInspectorGUI();
         }
     }
 #endif
-
-
-// 각 슬롯은 Selectable이며, Slot에 따라 DescribeView가 변한다.
 
     public enum CheckType
     {
@@ -55,7 +52,7 @@ namespace UI.Entity.Selectable.Slot
         Other,
         None
     }
-    
+
     [Flags]
     public enum EquipmentType
     {
@@ -64,24 +61,25 @@ namespace UI.Entity.Selectable.Slot
         Accessory = 4,
         Tool = 8
     }
-    
-    // 아이템 슬롯인데
-    // -> Equip 창 -> 부위별 나누기
-    // -> Inventory 창 -> 타입별 나누기
+
+    /// <summary>
+    /// Selectable인 Item Slot
+    /// Item을 담을 수 있다.
+    /// </summary>
     public class SelectableItemSlot : SelectableSlot
     {
         public EquipmentType equipmentType;
-        
+
         [SerializeField] private int slotIndex;
         [SerializeField] private string slotName;
         [SerializeField] private Image icon;
         [SerializeField] private Image checkIcon;
-        
+
         [SerializeField] private Color selectColor;
         [SerializeField] private Color otherColor;
-        
+
         public int equippedItemIndex => slotIndex - 1;
-        
+
         private Item _item;
 
         public override void Select()
@@ -108,7 +106,7 @@ namespace UI.Entity.Selectable.Slot
                 icon.enabled = true;
             }
         }
-        
+
         public Item GetItem()
         {
             return _item;
@@ -121,8 +119,8 @@ namespace UI.Entity.Selectable.Slot
 
         public void Check(CheckType checkType)
         {
-            if(!checkIcon) return;
-            
+            if (!checkIcon) return;
+
             if (checkType == CheckType.Select)
             {
                 checkIcon.color = selectColor;

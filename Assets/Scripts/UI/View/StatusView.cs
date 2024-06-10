@@ -6,7 +6,9 @@ using UnityEngine;
 
 namespace UI.View
 {
-    // Display Status Data
+    /// <summary>
+    /// Status View
+    /// </summary>
     public class StatusView : UIContainerEntity
     {
         [Header("레벨")]

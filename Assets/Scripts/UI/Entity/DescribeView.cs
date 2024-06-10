@@ -10,10 +10,11 @@ using UnityEngine.UI;
 
 namespace UI.Entity
 {
+    /// <summary>
+    /// Display Selected Item
+    /// </summary>
     public class DescribeView : UIEntity
     {
-        // Only Display Selected Item
-
         [SerializeField] private Sprite weaponSprite;
         [SerializeField] private Sprite armorSprite;
         [SerializeField] private Sprite infoSprite;
@@ -35,8 +36,6 @@ namespace UI.Entity
         [SerializeField] private Image effectIcon;
         [SerializeField] private TMP_Text effectNameText;
         [SerializeField] private TMP_Text effectContextText;
-
-        // [SerializeField] private TMP_Text itemName;
 
         private void Awake()
         {

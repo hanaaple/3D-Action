@@ -2,7 +2,9 @@
 
 namespace UI.Entity.Selectable.Container
 {
-    // BaseInventoryView인 경우 사용하는 Container
+    /// <summary>
+    /// BaseInventoryView가 사용하는 Container
+    /// </summary>
     public class InventoryContainer : SelectableSlotContainer
     {
         public EquipmentType slotType;

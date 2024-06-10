@@ -6,6 +6,9 @@ using UnityEngine.UI;
 
 namespace UI.View.PlayView
 {
+    /// <summary>
+    /// 장착 중인 무기, 도구의 각 슬롯
+    /// </summary>
     [Serializable]
     public class PlayItemSlot
     {

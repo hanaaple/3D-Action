@@ -7,6 +7,9 @@ using UnityEngine.UI;
 
 namespace UI.View
 {
+    /// <summary>
+    /// Main Menu View
+    /// </summary>
     public class MainMenuUI : UIContainerEntity
     {
         [Space(10)]

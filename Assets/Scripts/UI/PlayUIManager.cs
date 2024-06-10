@@ -5,17 +5,6 @@ using UnityEngine.InputSystem;
 
 namespace UI
 {
-    // 1. UI 입력은 각자 받을 것이 몇몇 존재한다.
-    // 기본 슬롯, 인벤토리 슬롯 타입 변경 등
-
-    // 2. UI 입력은 최상단 Stack에서만 이루어져야한다.
-
-    // 여기서 stack이란 PlayerUIManager에 존재한다.
-    // -> 각 UI Entity에서 인풋 가능 여부에 따라 실행하던가
-    // -> 인풋에 따른 액션을 구현해놓고 PlayerUIManager에서 실행하던가
-
-
-
     /// <summary>
     /// 1. Stack으로 UI Entity를 관리한다.
     /// 2. UI Entity에 대한 Input을 받는다
