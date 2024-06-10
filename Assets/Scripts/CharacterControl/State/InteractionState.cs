@@ -1,4 +1,6 @@
-﻿namespace CharacterControl.State
+﻿using CharacterControl.State.Base;
+
+namespace CharacterControl.State
 {
     public class InteractionState : BaseActionState
     {

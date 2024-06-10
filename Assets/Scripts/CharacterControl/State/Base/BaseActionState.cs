@@ -1,4 +1,4 @@
-﻿namespace CharacterControl.State
+﻿namespace CharacterControl.State.Base
 {
     public abstract class BaseActionState
     {

@@ -12,7 +12,9 @@ namespace Data.Play
         Right
     }
     
-    // 장착 중인 장비 데이터
+    /// <summary>
+    /// 장착 중인 장비 데이터
+    /// </summary>
     [Serializable]
     public class EquippedItemData : INotifyPropertyChanged
     {

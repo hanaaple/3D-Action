@@ -7,6 +7,10 @@ using UnityEngine;
 
 namespace UI.View.Equip
 {
+    /// <summary>
+    /// 장비창에서 슬롯 클릭 시 Display되는 View
+    /// 교체할 장비 종류의 인벤토리를 보여준다.
+    /// </summary>
     public class EquipInventoryView : BaseInventoryView
     {
         private EquipmentItemSlot _targetEquipSlot;

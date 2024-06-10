@@ -3,6 +3,10 @@ using UI.Entity.Selectable.Container;
 
 namespace UI.Entity.Base
 {
+    /// <summary>
+    /// PlayUIManager에 의해 Stack으로 관리된다.
+    /// 입력 가능한 UI View로 사용된다.
+    /// </summary>
     public abstract class UIContainerEntity : UIEntity
     {
         public SelectableSlotContainer[] selectableSlotContainers;

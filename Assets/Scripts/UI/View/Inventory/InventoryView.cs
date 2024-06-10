@@ -1,5 +1,9 @@
 ﻿namespace UI.View.Inventory
 {
+    /// <summary>
+    /// 인벤토리 View
+    /// 슬롯 슬라이더에 의해 선택된 슬롯 타입에 따라 Container를 보여준다.
+    /// </summary>
     public class InventoryView : BaseInventoryView
     {
         // Slot Slide

@@ -5,10 +5,11 @@ using UI.Entity.Base;
 
 namespace UI.Entity
 {
+    /// <summary>
+    /// Display Player Data
+    /// </summary>
     public class PlayerDataView : UIEntity
     {
-        // Display PlayerData
-
         public TMP_Text attack;
         public TMP_Text defense;
         public TMP_Text healthPoint;

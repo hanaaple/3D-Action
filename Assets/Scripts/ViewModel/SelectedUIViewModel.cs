@@ -4,7 +4,7 @@ using UI.Entity.Selectable.Slot;
 
 namespace ViewModel
 {
-    // SelectedViewModel
+    // 선택된 Selectable ViewModel
     public sealed class SelectedUIViewModel : INotifyPropertyChanged
     {
         private SelectableItemSlot _selectedItemSlotDataData;

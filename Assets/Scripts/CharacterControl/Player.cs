@@ -1,4 +1,4 @@
-﻿using CharacterControl.State;
+﻿using CharacterControl.State.Base;
 using Data.Play;
 using UnityEngine;
 using Util;
@@ -44,31 +44,7 @@ namespace CharacterControl
 
             StateMachine = new ActionStateMachine();
             StateMachine.Initialize(playerContext, isStateMachineDebug);
-
-            // Equip Data Load해서 Equip이 바뀔 때마다 확인하고 Player에 장착
-
-            // equipViewModel.PropertyChanged += EquipItem;
         }
-
-        // 장비 인스턴스화
-        // private void EquipItem(object sender, PropertyChangedEventArgs e)
-        // {
-        //     var equipViewModel = DataManager.instance.equipViewModel;
-        //     var rightWeapon = equipViewModel.GetCurrentRightWeapon();
-        //     var leftWeapon = equipViewModel.GetCurrentLeftWeapon();
-        //     var helmet = equipViewModel.Helmet;
-        //     var breastplate = equipViewModel.Breastplate;
-        //     var leggings = equipViewModel.Leggings;
-        //     var shoes = equipViewModel.Shoes;
-        //
-        //     EquipmentManager.TryEquipRightWeapon(rightWeapon);
-        //     EquipmentManager.TryEquipLeftWeapon(leftWeapon);
-        //     
-        //     EquipmentManager.TryEquipArmor(helmet, ArmorType.Helmet);
-        //     EquipmentManager.TryEquipArmor(breastplate, ArmorType.Breastplate);
-        //     EquipmentManager.TryEquipArmor(leggings, ArmorType.Leggings);
-        //     EquipmentManager.TryEquipArmor(shoes, ArmorType.Shoes);
-        // }
 
         private void OnValidate()
         {

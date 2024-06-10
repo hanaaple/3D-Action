@@ -6,7 +6,9 @@ using Data.PlayItem;
 
 namespace Data.Play
 {
-    // 보유 중인 장비 데이터
+    /// <summary>
+    /// 보유 중인 장비 데이터
+    /// </summary>
     [Serializable]
     public class OwnedItemData : INotifyPropertyChanged
     {

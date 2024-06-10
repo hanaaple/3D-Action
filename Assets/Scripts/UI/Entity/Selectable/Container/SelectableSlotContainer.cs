@@ -17,12 +17,7 @@ namespace UI.Entity.Selectable.Container
 
         private SelectableSlot _selectedSlot;
 
-        // 즉, Slot은 Slot이고 
-        // 해당 Slot에 내용을 넣어줘서 작동시켜야댐
-
-        // Slot 개수에 비해 Capacity가 부족해지면 슬롯 수 업데이트, Navigation Update
-
-        // Set Item은
+        // Slot Capacity가 부족해지면 슬롯 수 업데이트, Navigation Update
 
         private void Awake()
         {

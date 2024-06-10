@@ -6,6 +6,7 @@ using Data.PlayItem;
 
 namespace ViewModel
 {
+    // 보유 중인 아이템 ViewModel
     public sealed class OwnedItemViewModel : INotifyPropertyChanged
     {
         private OwnedItemData _ownedItemData;

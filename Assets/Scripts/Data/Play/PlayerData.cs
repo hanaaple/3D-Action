@@ -6,12 +6,11 @@ using UnityEngine;
 
 namespace Data.Play
 {
-    // 장비, 스탯에 따른 계산 값  ex - (default + 스탯 * 1 + 악세 * 2)
-    // hp, mp, Sp, 공격력, 방어력, 장비 중량 등    
-    // 계산되는 데이터
-
-    //현재 플레이어 데이터?
-
+    /// <summary>
+    /// 장비, 스탯에 따른 계산 값  ex - (default + 스탯 * 1 + 악세 * 2)
+    /// hp, mp, Sp, 공격력, 방어력, 장비 중량 등
+    /// 현재 플레이어 데이터
+    /// </summary>
     [Serializable]
     public class PlayerData : INotifyPropertyChanged
     {

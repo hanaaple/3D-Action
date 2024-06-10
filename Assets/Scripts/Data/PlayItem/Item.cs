@@ -4,6 +4,10 @@ using UnityEngine;
 
 namespace Data.PlayItem
 {
+    /// <summary>
+    /// 아이템 데이터
+    /// 상속하여 사용
+    /// </summary>
     [Serializable]
     public abstract class Item
     {

@@ -2,7 +2,9 @@ using UnityEngine;
 
 namespace Util
 {
-    // 각 Action State에서 관찰하여 작동
+    /// <summary>
+    /// 각 Action State에서 관찰하여 작동
+    /// </summary>
     public class AnimationEventHandler : MonoBehaviour
     {
         public delegate void RotationHandler(bool isRotateEnable);

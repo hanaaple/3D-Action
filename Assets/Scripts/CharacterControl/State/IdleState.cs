@@ -1,4 +1,6 @@
-﻿namespace CharacterControl.State
+﻿using CharacterControl.State.Base;
+
+namespace CharacterControl.State
 {
     // Include Locomotion (Idle, Move, Run, Falling)
     public class IdleState : BaseActionState

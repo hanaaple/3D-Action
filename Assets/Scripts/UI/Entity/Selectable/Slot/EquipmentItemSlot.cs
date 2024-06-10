@@ -10,7 +10,6 @@ namespace UI.Entity.Selectable.Slot
     public class EquipmentItemSlotEditor : SelectableSlotEditor
     {
         private SerializedProperty _slotType;
-        //private SerializedProperty _selectableContentProperty;
 
         protected override void OnEnable()
         {
@@ -42,6 +41,9 @@ namespace UI.Entity.Selectable.Slot
         All
     }
 
+    /// <summary>
+    /// 장비창 전용 Selectable Item Slot
+    /// </summary>
     public class EquipmentItemSlot : SelectableItemSlot
     {
         public EquipSlotType slotType;

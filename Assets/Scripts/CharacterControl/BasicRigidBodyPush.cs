@@ -2,6 +2,7 @@ using UnityEngine;
 
 namespace CharacterControl
 {
+    // 아이템을 밀어내는 클래스
     public class BasicRigidBodyPush : MonoBehaviour
     {
         public LayerMask pushLayers;
@@ -9,8 +10,7 @@ namespace CharacterControl
         [Range(0.2f, 1.5f)] public float strength = .7f;
 
         private ThirdPlayerController _controller;
-    
-    
+
         private void Start()
         {
             _controller = GetComponent<ThirdPlayerController>();
@@ -32,11 +32,11 @@ namespace CharacterControl
             if ((bodyLayerMask & pushLayers.value) == 0) return;
 
             // don't want to push object below us
-            if(hit.moveDirection.y < -0.2f) return;
-        
+            if (hit.moveDirection.y < -0.2f) return;
+
             // Calculate push direction from move direction, horizontal motion only
             Vector3 pushDir = new Vector3(hit.moveDirection.x, 0.3f, hit.moveDirection.z);
-        
+
             // Apply the push and take strength into account
             body.AddForce(pushDir * strength * _controller.GetMoveSpeed(), ForceMode.Impulse);
         }

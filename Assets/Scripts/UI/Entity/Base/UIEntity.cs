@@ -2,14 +2,16 @@
 
 namespace UI.Entity.Base
 {
-    // UI View
-    // 오직 입력 (버튼)에 대한 결과만을 책임진다.
+    /// <summary>
+    /// UI View
+    /// ViewModel에 의해 전해진 Data로 View를 Display한다
+    /// </summary>
     public abstract class UIEntity : MonoBehaviour
     {
         protected virtual void UpdateView()
         {
         }
-        
+
         private void OnEnable()
         {
             UpdateView();

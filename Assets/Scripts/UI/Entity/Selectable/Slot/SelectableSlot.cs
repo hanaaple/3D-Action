@@ -5,6 +5,10 @@ using UnityEngine.UI;
 
 namespace UI.Entity.Selectable.Slot
 {
+    /// <summary>
+    /// Selectable 오브젝트
+    /// Base로 사용된다.
+    /// </summary>
     public class SelectableSlot : Button, IPointerMoveHandler
     {
         private Animator _animator;

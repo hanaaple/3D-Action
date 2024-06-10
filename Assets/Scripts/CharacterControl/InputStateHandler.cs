@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using CharacterControl.State;
+using CharacterControl.State.Base;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -22,6 +23,9 @@ namespace CharacterControl
         public float pressedTime;
     }
 
+    /// <summary>
+    /// Input handler
+    /// </summary>
     public class InputStateHandler : MonoBehaviour
     {
         [Header("Character Input Values")] public Vector2 move;

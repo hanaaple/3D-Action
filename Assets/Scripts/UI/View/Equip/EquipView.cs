@@ -10,6 +10,9 @@ using UnityEngine.UI;
 
 namespace UI.View.Equip
 {
+    /// <summary>
+    /// 장비창 View
+    /// </summary>
     public class EquipView : UIContainerEntity
     {
         [SerializeField] private TMP_Text slotNameText;

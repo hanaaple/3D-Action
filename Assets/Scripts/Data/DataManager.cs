@@ -7,20 +7,10 @@ using ViewModel;
 
 namespace Data
 {
-    // 장착 중인 아이템
-    // EquippedItemDataChange -> UpdatePlayView
-    // EquippedItemDataChange -> EquipmentView
-    // EquippedItemData -> PlayerDataChange -> UpdateStatusView
-
-    // 스탯 변화
-    // StatusDataChange -> PlayerDataChange -> UpdateStatusView
-
-    // 계산되는 데이터
-    // PlayerDataChange -> UpdatePlayerDataView
-
-    // 보유 중인 장비
-    // OwnedItemDataChange -> UpdateInventoryView
-
+    /// <summary>
+    /// 데이터를 관리
+    /// ViewModel을 초기화
+    /// </summary>
     [Serializable]
     public class DataManager : MonoBehaviour
     {

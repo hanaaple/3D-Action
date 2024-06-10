@@ -20,6 +20,10 @@ namespace Data.Static.Scriptable
     }
 #endif
     
+    /// <summary>
+    /// 정적 아이템 데이터
+    /// Scriptable Object로 관리
+    /// </summary>
     public abstract class ItemData : ScriptableObject
     {
         [ScriptableObjectId]
