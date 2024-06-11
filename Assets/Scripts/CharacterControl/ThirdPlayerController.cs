@@ -1,4 +1,3 @@
-using CharacterControl.State;
 using CharacterControl.State.Base;
 using Data;
 using Data.PlayItem;
@@ -25,8 +24,7 @@ namespace CharacterControl
         [Range(0, 1)] [SerializeField] private float rollingAudioVolume = 0.5f;
         [Range(0, 1)] [SerializeField] private float landingAudioVolume = 0.5f;
 
-        [Header("Roll")] public float rollSpeed = 5f;
-        [SerializeField] private float rollMotionSpeed = 1f;
+        [Header("Roll")] [SerializeField] private float rollMotionSpeed = 1f;
         [SerializeField] private float rollThreshold = 0f;
 
         [Header("Jump")] public float jumpHeight = 1.2f;
@@ -112,7 +110,6 @@ namespace CharacterControl
         // Gravity, GroundCheck 등을 Custom 하게 되는 경우 StateUpdate으로 위치 변경
         private void Update()
         {
-            UpdateAnimationSpeed();
             Gravity();
             GroundedCheck();
         }
@@ -178,7 +175,7 @@ namespace CharacterControl
             }
         }
 
-        private void UpdateAnimationSpeed()
+        public void UpdateAnimationSpeed()
         {
             float targetSpeed = _inputStateHandler.run ? runSpeed : moveSpeed;
 
@@ -350,6 +347,22 @@ namespace CharacterControl
             {
                 Animator.SetBool(_animIdRightGrip, false);
             }
+        }
+
+        public void Teleport(Transform targetTransform)
+        {
+            transform.SetPositionAndRotation(targetTransform.position, targetTransform.rotation);
+            
+            InitMoveState();
+        }
+
+        public void InitMoveState()
+        {
+            MoveSpeed = 0;
+            _rotationVelocity = 0;
+            _animationBlend = 0;
+            Animator.SetFloat(_animIdSpeed, 0);
+            Animator.SetFloat(_animIdMotionSpeed, 0);
         }
     }
 }

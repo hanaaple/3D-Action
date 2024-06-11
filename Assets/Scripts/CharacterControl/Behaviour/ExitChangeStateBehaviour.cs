@@ -1,11 +1,11 @@
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace CharacterControl.Behaviour
 {
     /// <summary>
-    /// WeaponChange Animation 종료 Behaviour
+    /// Animation 종료 시, State를 변경하는 Behaviour
     /// </summary>
-    public class WeaponChangeBehaviour : StateMachineBehaviour
+    public class ExitChangeStateBehaviour : StateMachineBehaviour
     {
         public override void OnStateExit(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
         {

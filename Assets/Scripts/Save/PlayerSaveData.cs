@@ -1,10 +1,10 @@
 ﻿using System;
 using Data.Play;
 
-namespace Util
+namespace Save
 {
     [Serializable]
-    public class SaveData
+    public class PlayerSaveData
     {
         public StatusData statusData;
         public EquippedItemData equippedItemData;

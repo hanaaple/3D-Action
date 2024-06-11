@@ -23,6 +23,7 @@ namespace CharacterControl.State
 
         public override void Update(ActionStateMachine stateMachine, bool isOnChange = false)
         {
+            PlayerContext.Controller.UpdateAnimationSpeed();
             PlayerContext.Controller.UpdateSpeed();
             PlayerContext.Controller.Rotate();
             PlayerContext.Controller.Translate();

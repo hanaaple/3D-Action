@@ -10,5 +10,8 @@ namespace Interaction
     {
         public Vector3 GetPosition();
         public void Interact(PlayerInteraction playerInteraction);
+        public void OnAnimationEvent();
+        public void OnInteractionEnd();
+        public string GetUIContext();
     }
 }

@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c332a250c05a3b644bb4d08e3696ede1, type: 3}
   m_Name: Sword A
   m_EditorClassIdentifier: 
-  id: 47178760-ca4b-47eb-92e7-004957604640
+  id: b84df10e-935d-435a-b23b-ea4d90303034
   itemName: "\uAE38\uCB49\uD55C \uB871\uC18C\uB4DC"
   slotSprite: {fileID: 21300000, guid: 158be32ff2ccad14e8831bd617f89478, type: 3}
   itemDescription: "\uB871\uC18C\uB4DC\uC784"

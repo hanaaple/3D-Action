@@ -34,6 +34,14 @@ namespace Data.PlayItem
         }
 
         public abstract Item Clone();
+
+        public void CheckException()
+        {
+            if (id != GetItemData()?.id)
+            {
+                Debug.LogError($"아이템 Data의 Id가 다름  {id},    {GetItemData().id}");
+            }
+        }
     }
 
     public static class ItemExtensions

@@ -1,8 +1,10 @@
 ﻿using System;
+using System.Collections.Generic;
 using CharacterControl;
 using Data.Static;
+using Interaction;
+using Save;
 using UnityEngine;
-using Util;
 using ViewModel;
 
 namespace Data
@@ -28,6 +30,8 @@ namespace Data
 
         public LevelUpTable LevelUpTable;
 
+        private List<SavableInteraction> _savableInteractions = new();
+
         // Add Item -> Item 중에서 선택해서 EquipData.Equip 인데
 
         private void Awake()
@@ -49,11 +53,29 @@ namespace Data
             selectedUiViewModel = new SelectedUIViewModel();
             selectedUiViewModel.Initialize();
 
-            _player.LoadOrCreateData();
+            if (SaveManager.IsLoadEnable())
+            {
+                var saveData = SaveManager.Load();
+                _player.LoadData(saveData);
+            }
+            else
+            {
+                _player.CreateData();
+            }
         }
 
         private void Start()
         {
+            if (SaveManager.IsLoadEnable())
+            {
+                var saveData = SaveManager.Load();
+                
+                foreach (var savableInteraction in _savableInteractions)
+                {
+                    savableInteraction.LoadData(saveData);
+                }
+            }
+
             _player.BroadCastModelChange();
         }
 
@@ -66,8 +88,25 @@ namespace Data
 
         private void OnApplicationQuit()
         {
-            var saveData = _player.GetSaveData();
+            var playerSaveData = _player.GetSaveData();
+            
+            SaveData saveData = new SaveData
+            {
+                playerSaveData = playerSaveData,
+                InteractableSaveData = new Dictionary<string, InteractableSaveData>()
+            };
+            
+            foreach (var savableInteraction in _savableInteractions)
+            {
+                saveData.InteractableSaveData.Add(savableInteraction.id, savableInteraction.GetSaveData());
+            }
+            
             SaveManager.Save(saveData);
+        }
+
+        public void RegistSavableInteraction(SavableInteraction savableInteraction)
+        {
+            _savableInteractions.Add(savableInteraction);
         }
     }
 }

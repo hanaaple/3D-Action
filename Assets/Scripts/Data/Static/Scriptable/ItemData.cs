@@ -1,37 +1,55 @@
 ﻿using System;
 using UnityEditor;
+using Util;
+
+#if UNITY_EDITOR
 using UnityEngine;
+#endif
 
 namespace Data.Static.Scriptable
 {
-    public class ScriptableObjectIdAttribute : PropertyAttribute { }
-
 #if UNITY_EDITOR
-    [CustomPropertyDrawer(typeof(ScriptableObjectIdAttribute))]
-    public class ScriptableObjectIdDrawer : PropertyDrawer {
-        public override void OnGUI(Rect position, SerializedProperty property, GUIContent label) {
-            GUI.enabled = false;
-            if (string.IsNullOrEmpty(property.stringValue)) {
-                property.stringValue = Guid.NewGuid().ToString();
+    [CustomEditor(typeof(ItemData), true)]
+    [CanEditMultipleObjects]
+    public class SavableInteractionEditor : Editor
+    {
+        public override void OnInspectorGUI()
+        {
+            serializedObject.Update();
+            SerializedProperty property = serializedObject.GetIterator();
+            property.NextVisible(true);
+            do
+            {
+                EditorGUILayout.PropertyField(property, true);
+            } while (property.NextVisible(false));
+
+            // 고유 ID 생성 버튼 추가
+            if (GUILayout.Button("Generate New Unique ID"))
+            {
+                foreach (var target in targets)
+                {
+                    ItemData myMonoBehaviour = (ItemData)target;
+                    myMonoBehaviour.GenerateNewId();
+                    EditorUtility.SetDirty(myMonoBehaviour);
+                }
             }
-            EditorGUI.PropertyField(position, property, label, true);
-            GUI.enabled = true;
+
+            serializedObject.ApplyModifiedProperties();
         }
     }
 #endif
-    
+
     /// <summary>
     /// 정적 아이템 데이터
     /// Scriptable Object로 관리
     /// </summary>
     public abstract class ItemData : ScriptableObject
     {
-        [ScriptableObjectId]
-        public string id;
-        
+        [UniqueId] public string id;
+
         public string itemName;
         public Sprite slotSprite;
-        
+
         // public ItemType itemType;
 
         // 중복이 불가능함 - 무기, 방어구, 악세사리
@@ -48,6 +66,11 @@ namespace Data.Static.Scriptable
         // public int maximumNumberOfPossession;
 
         public string itemDescription;
+
+        public void GenerateNewId()
+        {
+            id = Guid.NewGuid().ToString();
+        }
     }
 }
 

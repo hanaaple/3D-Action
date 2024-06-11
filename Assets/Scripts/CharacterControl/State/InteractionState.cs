@@ -10,10 +10,9 @@ namespace CharacterControl.State
 
         public override void OnEnterState(ActionStateMachine stateMachine)
         {
-            PlayerContext.PlayerInteraction.Loot();
-            
-            // 애니메이션 추가, 종료 후 ChangeState
-            stateMachine.ChangeStateByInputOrIdle();
+            // 각 애니메이션은 IInteractable의 Interaction()에 의해 작동된다.
+            // 종료 후 ChangeState 또한 IInteractable에 의해 작동한다.
+            PlayerContext.PlayerInteraction.Interaction();
         }
 
         public override void OnExitState(ActionStateMachine stateMachine)
