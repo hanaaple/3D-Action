@@ -1,7 +1,7 @@
 ﻿using CharacterControl.State.Base;
 using Data.Play;
+using Save;
 using UnityEngine;
-using Util;
 using ViewModel;
 
 namespace CharacterControl
@@ -9,7 +9,7 @@ namespace CharacterControl
     // 세팅 값은 존재하지 않음
     // State Pattern - Client
     [RequireComponent(typeof(InputStateHandler), typeof(ThirdPlayerController))]
-    public class Player : MonoBehaviour
+    public class Player : MonoBehaviour, ISavable
     {
         internal ActionStateMachine StateMachine;
 
@@ -63,24 +63,22 @@ namespace CharacterControl
             StateMachine?.LateUpdateState();
         }
 
-        public void LoadOrCreateData()
+        public void LoadData(SaveData saveData)
         {
-            if (SaveManager.IsLoadEnable())
-            {
-                var saveData = SaveManager.Load();
+            statusData = saveData.playerSaveData.statusData;
+            equippedItemData = saveData.playerSaveData.equippedItemData;
+            ownedItemData = saveData.playerSaveData.ownedItemData;
+            playerData = saveData.playerSaveData.playerData;
 
-                statusData = saveData.statusData;
-                equippedItemData = saveData.equippedItemData;
-                ownedItemData = saveData.ownedItemData;
-                playerData = saveData.playerData;
-            }
-            else
-            {
-                statusData = new StatusData();
-                equippedItemData = new EquippedItemData(3, 3, 4, 8);
-                ownedItemData = new OwnedItemData();
-                playerData = new PlayerData();
-            }
+            InitializeViewModel();
+        }
+
+        public void CreateData()
+        {
+            statusData = new StatusData();
+            equippedItemData = new EquippedItemData(3, 3, 4, 8);
+            ownedItemData = new OwnedItemData();
+            playerData = new PlayerData();
 
             InitializeViewModel();
         }
@@ -107,16 +105,16 @@ namespace CharacterControl
             ownedItemData.OnPropertyChanged();
         }
 
-        public SaveData GetSaveData()
+        public PlayerSaveData GetSaveData()
         {
-            SaveData saveData = new SaveData
+            PlayerSaveData playerSaveData = new PlayerSaveData
             {
                 statusData = statusData,
                 equippedItemData = equippedItemData,
                 ownedItemData = ownedItemData,
                 playerData = playerData
             };
-            return saveData;
+            return playerSaveData;
         }
     }
 }

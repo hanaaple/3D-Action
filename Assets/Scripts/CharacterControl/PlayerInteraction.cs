@@ -19,13 +19,19 @@ namespace CharacterControl
         [SerializeField] private Color interactableColor;
         [SerializeField] private Color unInteractableColor;
 
-        private Player _player;
-        
+        internal Animator Animator;
+        internal Player Player;
+
+        private ThirdPlayerController _controller;
+        private IInteractable _interactable;
+
         private readonly List<IInteractable> _closeInteractionItems = new();
 
         private void Start()
         {
-            _player = GetComponent<Player>();
+            Player = GetComponent<Player>();
+            Animator = GetComponent<Animator>();
+            _controller = GetComponent<ThirdPlayerController>();
         }
 
         private void Update()
@@ -34,8 +40,9 @@ namespace CharacterControl
                 return;
 
             interactionUIText.color = IsInteractionEnable() ? interactableColor : unInteractableColor;
+            interactionUIText.text = $"E: {GetCloseInteraction().GetUIContext()}";
         }
-        
+
         private void UpdateInteractionView()
         {
             interactionUIPanel.SetActive(IsInteractionExist());
@@ -61,18 +68,46 @@ namespace CharacterControl
 
         private bool IsInteractionEnable()
         {
-            return _player.StateMachine.ChangeStateEnable(typeof(InteractionState));
+            return Player.StateMachine.ChangeStateEnable(typeof(InteractionState));
         }
 
-        public void Loot()
+        public void Interaction()
+        {
+            var closeInteraction = GetCloseInteraction();
+
+            TryRemoveCloseItem(closeInteraction);
+
+            _interactable = closeInteraction;
+            _interactable.Interact(this);
+        }
+
+        public void EndInteraction()
+        {
+            _interactable.OnInteractionEnd();
+        }
+
+        private IInteractable GetCloseInteraction()
         {
             var closeInteraction = _closeInteractionItems
                 .OrderBy(item => Vector3.Distance(transform.position, item.GetPosition()))
                 .First();
 
-            TryRemoveCloseItem(closeInteraction);
+            return closeInteraction;
+        }
 
-            closeInteraction.Interact(this);
+        public void Teleport(Transform targetTransform)
+        {
+            _controller.Teleport(targetTransform);
+        }
+        
+        public void InitMoveState()
+        {
+            _controller.InitMoveState();
+        }
+
+        public void AnimationEvent()
+        {
+            _interactable.OnAnimationEvent();
         }
     }
 }

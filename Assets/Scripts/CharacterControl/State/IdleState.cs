@@ -23,7 +23,7 @@ namespace CharacterControl.State
             {
                 return;
             }
-            
+            PlayerContext.Controller.UpdateAnimationSpeed();
             PlayerContext.Controller.UpdateSpeed();
             PlayerContext.Controller.Rotate();
             PlayerContext.Controller.Translate();

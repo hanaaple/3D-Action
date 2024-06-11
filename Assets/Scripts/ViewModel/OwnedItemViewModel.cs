@@ -57,6 +57,8 @@ namespace ViewModel
 
         public void AddItem(Item item)
         {
+            item.CheckException();
+            
             var clone = item.Clone();
             clone.Initialize();
             _ownedItemData.AddItem(clone);

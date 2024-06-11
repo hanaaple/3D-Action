@@ -42,6 +42,8 @@ namespace CharacterControl.State
             animationEventHandler.OnRotationEnableChanged += SetRotationEnable;
             animationEventHandler.OnComboEnableChanged += SetComboEnable;
 
+            PlayerContext.Controller.InitMoveState();
+            
             _comboCount = 0;
 
             var weapon = DataManager.instance.playerEquipViewModel.GetCurrentLeftWeapon();

@@ -16,13 +16,13 @@ namespace CharacterControl.State
         {
             PlayerContext.Controller.RotateImmediately();
 
-            PlayerContext.Controller.MoveSpeed = PlayerContext.Controller.rollSpeed;
-
+            PlayerContext.Controller.Animator.applyRootMotion = true;
             PlayerContext.Controller.Animator?.SetTrigger(_animIdRoll);
         }
 
         public override void OnExitState(ActionStateMachine stateMachine)
         {
+            PlayerContext.Controller.Animator.applyRootMotion = false;
         }
 
         public override void Update(ActionStateMachine stateMachine, bool isOnChange = false)
