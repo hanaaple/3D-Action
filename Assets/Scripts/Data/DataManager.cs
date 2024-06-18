@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using CharacterControl;
 using Data.Static;
 using Interaction;
+using Interaction.Base;
 using Save;
 using UnityEngine;
 using ViewModel;

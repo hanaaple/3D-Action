@@ -3,6 +3,7 @@ using CharacterControl;
 using Data;
 using Data.PlayItem;
 using Data.Static.Scriptable;
+using Interaction.Base;
 using Save;
 using UI.Entity.ToastMessage;
 using UnityEngine;

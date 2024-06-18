@@ -68,5 +68,25 @@ namespace UI.View.PlayView
             var equipViewModel = DataManager.instance.playerEquipViewModel;
             equipViewModel.SetToolIndexNext();
         }
+        
+        public override bool IsDecisionActive()
+        {
+            return gameObject.activeSelf;
+        }
+
+        public override bool IsRightArrowActive()
+        {
+            return gameObject.activeSelf;
+        }
+
+        public override bool IsLeftArrowActive()
+        {
+            return gameObject.activeSelf;
+        }
+
+        public override bool IsDownArrowActive()
+        {
+            return gameObject.activeSelf;
+        }
     }
 }

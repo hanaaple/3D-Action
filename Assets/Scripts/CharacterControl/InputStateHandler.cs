@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using CharacterControl.State;
 using CharacterControl.State.Base;
+using UI;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -28,6 +29,8 @@ namespace CharacterControl
     /// </summary>
     public class InputStateHandler : MonoBehaviour
     {
+        [SerializeField] private PlayUIManager playUIManager;
+        
         [Header("Character Input Values")] public Vector2 move;
         public Vector2 look;
         public bool run;
@@ -199,18 +202,24 @@ namespace CharacterControl
 
         private void LeftHandChangeInput()
         {
+            if (playUIManager.LeftArrowEnable()) return;
+            
             _inputBuffer.Add(new InputBufferData(typeof(LeftHandChangeState), Time.unscaledTime));
             debuggingInputBuffer.Add(new InputBufferData(typeof(LeftHandChangeState), Time.unscaledTime));
         }
 
         private void RightHandChangeInput()
         {
+            if (playUIManager.RightArrowEnable()) return;
+            
             _inputBuffer.Add(new InputBufferData(typeof(RightHandChangeState), Time.unscaledTime));
             debuggingInputBuffer.Add(new InputBufferData(typeof(RightHandChangeState), Time.unscaledTime));
         }
 
         private void DecisionInput()
         {
+            if (playUIManager.DecisionEnable()) return;
+            
             _inputBuffer.Add(new InputBufferData(typeof(InteractionState), Time.unscaledTime));
             debuggingInputBuffer.Add(new InputBufferData(typeof(InteractionState), Time.unscaledTime));
         }

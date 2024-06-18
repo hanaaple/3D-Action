@@ -68,7 +68,7 @@ namespace UI.Entity.Base
             action?.Invoke(this);
         }
 
-        public virtual void OnClick()
+        public virtual void OnDecision()
         {
             CurrentSelectableSlotContainer?.Decision();
         }
@@ -83,6 +83,26 @@ namespace UI.Entity.Base
 
         public virtual void OnDownArrow()
         {
+        }
+
+        public virtual bool IsDecisionActive()
+        {
+            return gameObject.activeSelf;
+        }
+
+        public virtual bool IsRightArrowActive()
+        {
+            return gameObject.activeSelf;
+        }
+
+        public virtual bool IsLeftArrowActive()
+        {
+            return gameObject.activeSelf;
+        }
+
+        public virtual bool IsDownArrowActive()
+        {
+            return gameObject.activeSelf;
         }
     }
 }
