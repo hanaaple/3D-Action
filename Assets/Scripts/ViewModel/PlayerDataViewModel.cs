@@ -71,8 +71,18 @@ namespace ViewModel
             set => _playerData.MaxEquipWeight = value;
         }
         
-        // EquippedItemData -> PlayerDataChange
-        // StatusDataChange -> PlayerDataChange
+        public int PoiseHealthPoint
+        {
+            get => _playerData.PoiseHealthPoint;
+            set => _playerData.PoiseHealthPoint = value;
+        }
+        
+        public int MaxPoiseHealthPoint
+        {
+            get => _playerData.MaxPoiseHealthPoint;
+            set => _playerData.MaxPoiseHealthPoint = value;
+        }
+        
         public void Initialize(PlayerData playerData, EquippedItemData equippedItemData, StatusData statusData)
         {
             _playerData = playerData;
