@@ -25,6 +25,9 @@ namespace Data.Play
         [SerializeField] private int maxManaPoint;
         [SerializeField] private int maxStaminaPoint;
         [SerializeField] private int maxEquipWeight;
+        
+        [SerializeField] private int poiseHealthPoint;
+        [SerializeField] private int maxPoiseHealthPoint;
 
         [field: NonSerialized] public event PropertyChangedEventHandler PropertyChanged;
 
@@ -88,6 +91,18 @@ namespace Data.Play
             set => SetField(ref maxEquipWeight, value);
         }
 
+        public int PoiseHealthPoint
+        {
+            get => poiseHealthPoint;
+            set => SetField(ref poiseHealthPoint, value);
+        }
+        
+        public int MaxPoiseHealthPoint
+        {
+            get => maxPoiseHealthPoint;
+            set => SetField(ref maxPoiseHealthPoint, value);
+        }
+        
         protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
