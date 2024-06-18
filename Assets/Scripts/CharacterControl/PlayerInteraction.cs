@@ -1,8 +1,7 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using CharacterControl.State;
+﻿using CharacterControl.State;
 using Interaction;
-using TMPro;
+using Interaction.Base;
+using UI.View;
 using UnityEngine;
 
 namespace CharacterControl
@@ -12,58 +11,50 @@ namespace CharacterControl
     /// </summary>
     public class PlayerInteraction : MonoBehaviour
     {
-        [SerializeField] private GameObject interactionUIPanel;
-
-        [SerializeField] private TMP_Text interactionUIText;
-
-        [SerializeField] private Color interactableColor;
-        [SerializeField] private Color unInteractableColor;
-
+        [SerializeField] private InteractionUIView interactionUIView;
+        
         internal Animator Animator;
         internal Player Player;
 
         private ThirdPlayerController _controller;
-        private IInteractable _interactable;
+        private IInteractable _playingInteractable;
 
-        private readonly List<IInteractable> _closeInteractionItems = new();
-
+        private InteractionUIViewModel _interactionUIViewModel;
+        
         private void Start()
         {
             Player = GetComponent<Player>();
             Animator = GetComponent<Animator>();
             _controller = GetComponent<ThirdPlayerController>();
+
+            _interactionUIViewModel = new InteractionUIViewModel();
+            _interactionUIViewModel.Initialize(Player.transform);
+            
+            interactionUIView.Initialize(_interactionUIViewModel);
         }
 
         private void Update()
         {
-            if (!IsInteractionExist())
-                return;
-
-            interactionUIText.color = IsInteractionEnable() ? interactableColor : unInteractableColor;
-            interactionUIText.text = $"E: {GetCloseInteraction().GetUIContext()}";
-        }
-
-        private void UpdateInteractionView()
-        {
-            interactionUIPanel.SetActive(IsInteractionExist());
+            if (!_interactionUIViewModel.IsInteractableExist()) return;
+            
+            _interactionUIViewModel.SetInteractionEnable(IsInteractionEnable());
+            
+            _interactionUIViewModel.UpdateInteractableOrderAndIndex();
         }
 
         public void AddCloseItem(IInteractable interactable)
         {
-            _closeInteractionItems.Add(interactable);
-            UpdateInteractionView();
+            _interactionUIViewModel.AddInteractable(interactable);
         }
 
         public void TryRemoveCloseItem(IInteractable interactable)
         {
-            if (!_closeInteractionItems.Contains(interactable)) return;
-            _closeInteractionItems.Remove(interactable);
-            UpdateInteractionView();
+            _interactionUIViewModel.TryRemove(interactable);
         }
 
         public bool IsInteractionExist()
         {
-            return _closeInteractionItems.Count > 0;
+            return _interactionUIViewModel.IsInteractableExist();
         }
 
         private bool IsInteractionEnable()
@@ -73,26 +64,24 @@ namespace CharacterControl
 
         public void Interaction()
         {
-            var closeInteraction = GetCloseInteraction();
+            // 현재 display 중인 Interaction
+            var displayingInteractable = GetDisplayingInteractable();
 
-            TryRemoveCloseItem(closeInteraction);
+            TryRemoveCloseItem(displayingInteractable);
 
-            _interactable = closeInteraction;
-            _interactable.Interact(this);
+            _playingInteractable = displayingInteractable;
+            _playingInteractable.Interact(this);
         }
 
         public void EndInteraction()
         {
-            _interactable.OnInteractionEnd();
+            _playingInteractable.OnInteractionEnd();
+            _playingInteractable = null;
         }
 
-        private IInteractable GetCloseInteraction()
+        private IInteractable GetDisplayingInteractable()
         {
-            var closeInteraction = _closeInteractionItems
-                .OrderBy(item => Vector3.Distance(transform.position, item.GetPosition()))
-                .First();
-
-            return closeInteraction;
+            return _interactionUIViewModel.GetFocusedInteractable();
         }
 
         public void Teleport(Transform targetTransform)
@@ -107,7 +96,7 @@ namespace CharacterControl
 
         public void AnimationEvent()
         {
-            _interactable.OnAnimationEvent();
+            _playingInteractable.OnAnimationEvent();
         }
     }
 }

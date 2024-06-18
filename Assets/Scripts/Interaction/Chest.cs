@@ -1,4 +1,5 @@
 using CharacterControl;
+using Interaction.Base;
 using Save;
 using UnityEngine;
 using Util;

@@ -11,7 +11,9 @@ namespace UI
     /// </summary>
     public class PlayUIManager : MonoBehaviour
     {
-        [SerializeField] private UIContainerEntity[] baseUIEntities;
+        [Header("우선순위에 따라 넣으세요")] [SerializeField]
+        private UIContainerEntity[] baseUIEntities;
+
         [SerializeField] private UIContainerEntity rootUIEntity;
         [SerializeField] private PlayerInput playerInput;
 
@@ -89,23 +91,31 @@ namespace UI
             {
                 foreach (var uiEntity in baseUIEntities)
                 {
-                    uiEntity.OnClick();
+                    if (uiEntity.IsDecisionActive())
+                    {
+                        uiEntity.OnDecision();
+                        break;
+                    }
                 }
             }
             else
             {
                 var entity = _stack.Peek();
-                entity.OnClick();
+                entity.OnDecision();
             }
         }
 
-        public void OnChangeRightWeapon(InputValue inputValue)
+        public void OnRightArrow(InputValue inputValue)
         {
             if (_stack.Count == 0)
             {
                 foreach (var uiEntity in baseUIEntities)
                 {
-                    uiEntity.OnRightArrow();
+                    if (uiEntity.IsRightArrowActive())
+                    {
+                        uiEntity.OnRightArrow();
+                        break;
+                    }
                 }
             }
             else
@@ -115,13 +125,17 @@ namespace UI
             }
         }
 
-        public void OnChangeLeftWeapon(InputValue inputValue)
+        public void OnLeftArrow(InputValue inputValue)
         {
             if (_stack.Count == 0)
             {
                 foreach (var uiEntity in baseUIEntities)
                 {
-                    uiEntity.OnLeftArrow();
+                    if (uiEntity.IsLeftArrowActive())
+                    {
+                        uiEntity.OnLeftArrow();
+                        break;
+                    }
                 }
             }
             else
@@ -131,13 +145,17 @@ namespace UI
             }
         }
 
-        public void OnChangeItem(InputValue inputValue)
+        public void OnDownArrow(InputValue inputValue)
         {
             if (_stack.Count == 0)
             {
                 foreach (var uiEntity in baseUIEntities)
                 {
-                    uiEntity.OnDownArrow();
+                    if (!uiEntity.IsDownArrowActive())
+                    {
+                        uiEntity.OnDownArrow();
+                        break;
+                    }
                 }
             }
             else
@@ -147,5 +165,49 @@ namespace UI
             }
         }
 #endif
+        public bool LeftArrowEnable()
+        {
+            if (_stack.Count != 0) return true;
+
+            foreach (var uiEntity in baseUIEntities)
+            {
+                if (uiEntity.IsLeftArrowActive())
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        public bool RightArrowEnable()
+        {
+            if (_stack.Count != 0) return true;
+
+            foreach (var uiEntity in baseUIEntities)
+            {
+                if (uiEntity.IsRightArrowActive())
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        public bool DecisionEnable()
+        {
+            if (_stack.Count != 0) return true;
+
+            foreach (var uiEntity in baseUIEntities)
+            {
+                if (uiEntity.IsDecisionActive())
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
     }
 }
