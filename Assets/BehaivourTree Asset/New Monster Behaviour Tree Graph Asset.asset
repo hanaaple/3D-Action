@@ -1,0 +1,806 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &-9188424502776815190
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a9b5c064e0054177864ebbacd037733d, type: 3}
+  m_Name: MoveNode
+  m_EditorClassIdentifier: 
+  description: 
+  position:
+    serializedVersion: 2
+    x: 1314
+    y: 568
+    width: 150
+    height: 62
+  guid: f04a6540-c5f2-492e-bd71-64d0ff2af87b
+  nodeState: 0
+  started: 0
+  targetMode: 5
+  isRun: 0
+  target: {fileID: 0}
+--- !u!114 &-9012242624887958865
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 329838c1c1e74955b5dfaa8791d79ba1, type: 3}
+  m_Name: WaitNode
+  m_EditorClassIdentifier: 
+  description: 2
+  position:
+    serializedVersion: 2
+    x: 652
+    y: 808
+    width: 150
+    height: 62
+  guid: 27846e04-ff50-4ec3-9b37-d42088aee6bf
+  nodeState: 0
+  started: 0
+  waitSec: 2
+--- !u!114 &-8313688913779172145
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3b35abd75b30432c99d2783739ba513b, type: 3}
+  m_Name: SequenceNode
+  m_EditorClassIdentifier: 
+  description: 
+  position:
+    serializedVersion: 2
+    x: 1085
+    y: 662
+    width: 150
+    height: 86
+  guid: e6a36796-4108-4807-9f1d-c45e739435f4
+  nodeState: 0
+  started: 0
+  children:
+  - {fileID: 2738671061683070640}
+  - {fileID: 1752440983186341331}
+--- !u!114 &-7112604473040697153
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6069fd8c896a6154793d18c7dd17be77, type: 3}
+  m_Name: SetStateNode
+  m_EditorClassIdentifier: 
+  description: Return
+  position:
+    serializedVersion: 2
+    x: 157
+    y: 426
+    width: 150
+    height: 62
+  guid: 38a33049-f9b3-4444-ba1e-4b2edbca0b27
+  nodeState: 0
+  started: 0
+  monsterState: 32
+--- !u!114 &-6652957639505547115
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8decb4415cb39334eaae2a1ede5ae71c, type: 3}
+  m_Name: StateCheckNode
+  m_EditorClassIdentifier: 
+  description: Equal Dead
+  position:
+    serializedVersion: 2
+    x: -500
+    y: 296
+    width: 150
+    height: 86
+  guid: 3d7f68f2-9e65-4381-a9d8-78307456b692
+  nodeState: 0
+  started: 1
+  child: {fileID: -2018671182212998593}
+  monsterStateMode: 1
+  isNot: 0
+--- !u!114 &-5753483062210955964
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6069fd8c896a6154793d18c7dd17be77, type: 3}
+  m_Name: SetStateNode
+  m_EditorClassIdentifier: 
+  description: Set State Attack
+  position:
+    serializedVersion: 2
+    x: 469
+    y: 814
+    width: 150
+    height: 62
+  guid: a39f90ec-b2fe-449a-9478-c21e3f693a89
+  nodeState: 0
+  started: 0
+  monsterState: 16
+--- !u!114 &-5508520424398686862
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a9e0e8dcf8ab4971a4da00c5d323f788, type: 3}
+  m_Name: SelectorNode
+  m_EditorClassIdentifier: 
+  description: 
+  position:
+    serializedVersion: 2
+    x: 719
+    y: 84
+    width: 150
+    height: 86
+  guid: 0d85b866-1e3f-47dd-afcf-5f93d7bb24fa
+  nodeState: 0
+  started: 1
+  children:
+  - {fileID: -6652957639505547115}
+  - {fileID: 3693561864097040903}
+  - {fileID: 6160253443740956792}
+  - {fileID: 616182305518589893}
+  - {fileID: 2542904455778324509}
+--- !u!114 &-5315850154763009622
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3b35abd75b30432c99d2783739ba513b, type: 3}
+  m_Name: SequenceNode
+  m_EditorClassIdentifier: 
+  description: 
+  position:
+    serializedVersion: 2
+    x: 379
+    y: 677
+    width: 150
+    height: 86
+  guid: 33d6c8ca-26be-42c7-93b8-c376c88c7741
+  nodeState: 0
+  started: 0
+  children:
+  - {fileID: -3839341342776727228}
+  - {fileID: -5753483062210955964}
+--- !u!114 &-4369445837086907050
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 329838c1c1e74955b5dfaa8791d79ba1, type: 3}
+  m_Name: WaitNode
+  m_EditorClassIdentifier: 
+  description: 3
+  position:
+    serializedVersion: 2
+    x: 1472
+    y: 569
+    width: 150
+    height: 62
+  guid: fb8f0888-025b-4356-bdde-76098ba1bd96
+  nodeState: 0
+  started: 0
+  waitSec: 3
+--- !u!114 &-3839341342776727228
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a9b5c064e0054177864ebbacd037733d, type: 3}
+  m_Name: MoveNode
+  m_EditorClassIdentifier: 
+  description: Aggro Target
+  position:
+    serializedVersion: 2
+    x: 291
+    y: 816
+    width: 150
+    height: 62
+  guid: ef98f222-9e77-4b4d-8d01-185a55ba3850
+  nodeState: 0
+  started: 0
+  targetMode: 4
+  isRun: 0
+  target: {fileID: 0}
+--- !u!114 &-3271251964772158060
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a9b5c064e0054177864ebbacd037733d, type: 3}
+  m_Name: MoveNode
+  m_EditorClassIdentifier: 
+  description: Center of Area
+  position:
+    serializedVersion: 2
+    x: -290
+    y: 552
+    width: 150
+    height: 62
+  guid: e93e36ae-c3dd-4f44-abb5-2d3f65fa5c5a
+  nodeState: 0
+  started: 0
+  targetMode: 1
+  isRun: 1
+  target: {fileID: 0}
+--- !u!114 &-2018671182212998593
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6b4cbf0b94354a5099bbe2f5cb0f0096, type: 3}
+  m_Name: DeadActionNode
+  m_EditorClassIdentifier: 
+  description: 
+  position:
+    serializedVersion: 2
+    x: -493
+    y: 432
+    width: 150
+    height: 62
+  guid: 5d1b2b11-a138-4fd3-b753-6066511fff1f
+  nodeState: 0
+  started: 0
+--- !u!114 &-685052885958894689
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ec4e7cabe4332f243a77ee7423a0ff73, type: 3}
+  m_Name: TurnNode
+  m_EditorClassIdentifier: 
+  description: 
+  position:
+    serializedVersion: 2
+    x: 1640
+    y: 570
+    width: 150
+    height: 62
+  guid: d15ceca0-1bf2-4051-ab1b-98a2ba8068ea
+  nodeState: 0
+  started: 0
+  targetMode: 6
+  target: {fileID: 0}
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f29b530982784feabdd99b032a085aa7, type: 3}
+  m_Name: New Monster Behaviour Tree Graph Asset
+  m_EditorClassIdentifier: 
+  treeState: 1
+  rootNode: {fileID: 6496101990106467064}
+  nodes:
+  - {fileID: 6496101990106467064}
+  - {fileID: -6652957639505547115}
+  - {fileID: -2018671182212998593}
+  - {fileID: 3667875934022400986}
+  - {fileID: -3839341342776727228}
+  - {fileID: -5753483062210955964}
+  - {fileID: -5315850154763009622}
+  - {fileID: 8550145196524148502}
+  - {fileID: 7801336574371025013}
+  - {fileID: -9012242624887958865}
+  - {fileID: 3220088275582214600}
+  - {fileID: 2542904455778324509}
+  - {fileID: 3847600872675068734}
+  - {fileID: -4369445837086907050}
+  - {fileID: -9188424502776815190}
+  - {fileID: 1752440983186341331}
+  - {fileID: -8313688913779172145}
+  - {fileID: 9223296023696218105}
+  - {fileID: -5508520424398686862}
+  - {fileID: 6160253443740956792}
+  - {fileID: -3271251964772158060}
+  - {fileID: 2738671061683070640}
+  - {fileID: 868600800907607026}
+  - {fileID: 3090615022760573805}
+  - {fileID: 770572890459015274}
+  - {fileID: 616182305518589893}
+  - {fileID: 4385473965742608879}
+  - {fileID: -685052885958894689}
+  - {fileID: -7112604473040697153}
+  - {fileID: 3693561864097040903}
+  blackboard:
+    monsterManager: {fileID: 0}
+--- !u!114 &616182305518589893
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eaa9ca05ebd8558498dfde073a4a48ba, type: 3}
+  m_Name: AggroCheckNode
+  m_EditorClassIdentifier: 
+  description: 
+  position:
+    serializedVersion: 2
+    x: 735
+    y: 280
+    width: 150
+    height: 86
+  guid: d8192b78-c9de-44ec-97e4-4335717b7a2e
+  nodeState: 0
+  started: 0
+  child: {fileID: 4385473965742608879}
+--- !u!114 &770572890459015274
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ea2a2ca961d888d4684479bc4a88e4e7, type: 3}
+  m_Name: PatrolNextNode
+  m_EditorClassIdentifier: 
+  description: 
+  position:
+    serializedVersion: 2
+    x: 1797
+    y: 566
+    width: 150
+    height: 62
+  guid: 1b52b105-60d9-44eb-97de-937bcb4c2821
+  nodeState: 0
+  started: 0
+--- !u!114 &868600800907607026
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6069fd8c896a6154793d18c7dd17be77, type: 3}
+  m_Name: SetStateNode
+  m_EditorClassIdentifier: 
+  description: Idle
+  position:
+    serializedVersion: 2
+    x: -97
+    y: 552
+    width: 150
+    height: 62
+  guid: df3fcddd-ca60-40e5-9751-d830451d7194
+  nodeState: 0
+  started: 0
+  monsterState: 2
+--- !u!114 &1752440983186341331
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6069fd8c896a6154793d18c7dd17be77, type: 3}
+  m_Name: SetStateNode
+  m_EditorClassIdentifier: 
+  description: Set State Chase
+  position:
+    serializedVersion: 2
+    x: 1176
+    y: 805
+    width: 150
+    height: 62
+  guid: 439ffdc1-29b0-4e4f-8ce2-3d779d151e88
+  nodeState: 0
+  started: 0
+  monsterState: 4
+--- !u!114 &2542904455778324509
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8decb4415cb39334eaae2a1ede5ae71c, type: 3}
+  m_Name: StateCheckNode
+  m_EditorClassIdentifier: 
+  description: Equal Idle
+  position:
+    serializedVersion: 2
+    x: 1541
+    y: 260
+    width: 150
+    height: 86
+  guid: 027f5cc6-ca9c-4b61-a71a-db093d09fcc7
+  nodeState: 0
+  started: 0
+  child: {fileID: 3847600872675068734}
+  monsterStateMode: 2
+  isNot: 0
+--- !u!114 &2738671061683070640
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 329838c1c1e74955b5dfaa8791d79ba1, type: 3}
+  m_Name: WaitNode
+  m_EditorClassIdentifier: 
+  description: wait 5 sec
+  position:
+    serializedVersion: 2
+    x: 1005
+    y: 804
+    width: 150
+    height: 62
+  guid: 670bf22f-47b8-4fc8-ac9b-a8254dc92494
+  nodeState: 0
+  started: 0
+  waitSec: 5
+--- !u!114 &3090615022760573805
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3b35abd75b30432c99d2783739ba513b, type: 3}
+  m_Name: SequenceNode
+  m_EditorClassIdentifier: 
+  description: 
+  position:
+    serializedVersion: 2
+    x: -195
+    y: 419
+    width: 150
+    height: 86
+  guid: be0043ff-0569-4c56-b912-cbfbd8f34a03
+  nodeState: 0
+  started: 0
+  children:
+  - {fileID: -3271251964772158060}
+  - {fileID: 868600800907607026}
+--- !u!114 &3220088275582214600
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6069fd8c896a6154793d18c7dd17be77, type: 3}
+  m_Name: SetStateNode
+  m_EditorClassIdentifier: 
+  description: Set State Chase
+  position:
+    serializedVersion: 2
+    x: 833
+    y: 808
+    width: 150
+    height: 62
+  guid: e87ca269-3be4-40ea-88ff-686a94e18239
+  nodeState: 0
+  started: 0
+  monsterState: 4
+--- !u!114 &3667875934022400986
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8decb4415cb39334eaae2a1ede5ae71c, type: 3}
+  m_Name: StateCheckNode
+  m_EditorClassIdentifier: 
+  description: Equal Chase
+  position:
+    serializedVersion: 2
+    x: 374
+    y: 566
+    width: 150
+    height: 86
+  guid: 9abd3f5a-13a0-4b3e-a5dd-653b0066ad60
+  nodeState: 0
+  started: 0
+  child: {fileID: -5315850154763009622}
+  monsterStateMode: 4
+  isNot: 0
+--- !u!114 &3693561864097040903
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8decb4415cb39334eaae2a1ede5ae71c, type: 3}
+  m_Name: StateCheckNode
+  m_EditorClassIdentifier: 
+  description: Equal Return
+  position:
+    serializedVersion: 2
+    x: -196
+    y: 312
+    width: 150
+    height: 86
+  guid: 17f7540e-1f5d-4d1f-a0ad-43b1bc2b210f
+  nodeState: 0
+  started: 0
+  child: {fileID: 3090615022760573805}
+  monsterStateMode: 32
+  isNot: 0
+--- !u!114 &3847600872675068734
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3b35abd75b30432c99d2783739ba513b, type: 3}
+  m_Name: SequenceNode
+  m_EditorClassIdentifier: 
+  description: 
+  position:
+    serializedVersion: 2
+    x: 1549
+    y: 383
+    width: 150
+    height: 86
+  guid: 3c79a58e-a2bf-4c66-b2d8-18da3ba65f0d
+  nodeState: 0
+  started: 0
+  children:
+  - {fileID: -9188424502776815190}
+  - {fileID: -4369445837086907050}
+  - {fileID: -685052885958894689}
+  - {fileID: 770572890459015274}
+--- !u!114 &4247619054199241413
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 66f7f63f7488469dae77e037a779017b, type: 3}
+  m_Name: CheckMovingNode
+  m_EditorClassIdentifier: 
+  description: 
+  position:
+    x: 0
+    y: 0
+    width: 0
+    height: 0
+  guid: 
+  nodeState: 0
+  started: 0
+  child: {fileID: 0}
+  MonsterBlackBoard:
+    moveToPosition: {x: 0, y: 0, z: 0}
+    lookAtTarget: {fileID: 0}
+    moveToTarget: {fileID: 0}
+    monsterManager: {fileID: 0}
+  targetMode: 0
+--- !u!114 &4385473965742608879
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a9e0e8dcf8ab4971a4da00c5d323f788, type: 3}
+  m_Name: SelectorNode
+  m_EditorClassIdentifier: 
+  description: 
+  position:
+    serializedVersion: 2
+    x: 735
+    y: 405
+    width: 150
+    height: 86
+  guid: b571e6bb-6ce8-42e4-a854-02ee2395bfdd
+  nodeState: 0
+  started: 0
+  children:
+  - {fileID: 3667875934022400986}
+  - {fileID: 8550145196524148502}
+  - {fileID: 9223296023696218105}
+--- !u!114 &6160253443740956792
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 93a0fcac52e94f949034f34f1d7fcdf2, type: 3}
+  m_Name: CheckTransformNode
+  m_EditorClassIdentifier: 
+  description: Area
+  position:
+    serializedVersion: 2
+    x: 157
+    y: 320
+    width: 150
+    height: 86
+  guid: 3167c7c1-0216-4b2f-bfac-9dd903d7d519
+  nodeState: 0
+  started: 0
+  child: {fileID: -7112604473040697153}
+  targetMode: 0
+  isNegative: 1
+--- !u!114 &6496101990106467064
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c566abec39854492b618a067c17e7468, type: 3}
+  m_Name: RootNode
+  m_EditorClassIdentifier: 
+  description: 
+  position:
+    serializedVersion: 2
+    x: 727
+    y: -54
+    width: 150
+    height: 82
+  guid: ed263430-0d3e-4a72-8b35-0b141e98611a
+  nodeState: 0
+  started: 1
+  child: {fileID: -5508520424398686862}
+--- !u!114 &7801336574371025013
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3b35abd75b30432c99d2783739ba513b, type: 3}
+  m_Name: SequenceNode
+  m_EditorClassIdentifier: 
+  description: 
+  position:
+    serializedVersion: 2
+    x: 737
+    y: 673
+    width: 150
+    height: 86
+  guid: 2eb5ce49-233a-4789-babf-fc538d875506
+  nodeState: 0
+  started: 0
+  children:
+  - {fileID: -9012242624887958865}
+  - {fileID: 3220088275582214600}
+--- !u!114 &8550145196524148502
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8decb4415cb39334eaae2a1ede5ae71c, type: 3}
+  m_Name: StateCheckNode
+  m_EditorClassIdentifier: 
+  description: Equal Attack
+  position:
+    serializedVersion: 2
+    x: 737
+    y: 579
+    width: 150
+    height: 86
+  guid: d41087c7-1688-4a06-b296-adc617e945ac
+  nodeState: 0
+  started: 0
+  child: {fileID: 7801336574371025013}
+  monsterStateMode: 16
+  isNot: 0
+--- !u!114 &9223296023696218105
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8decb4415cb39334eaae2a1ede5ae71c, type: 3}
+  m_Name: StateCheckNode
+  m_EditorClassIdentifier: 
+  description: Equal Alert
+  position:
+    serializedVersion: 2
+    x: 1085
+    y: 552
+    width: 150
+    height: 86
+  guid: f934352b-39c1-40ec-9a90-a0bfed294654
+  nodeState: 0
+  started: 0
+  child: {fileID: -8313688913779172145}
+  monsterStateMode: 8
+  isNot: 0

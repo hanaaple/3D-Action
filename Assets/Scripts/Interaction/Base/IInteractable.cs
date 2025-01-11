@@ -1,4 +1,4 @@
-﻿using CharacterControl;
+﻿using Player;
 using UnityEngine;
 
 namespace Interaction.Base
@@ -9,7 +9,7 @@ namespace Interaction.Base
     public interface IInteractable
     {
         public Vector3 GetPosition();
-        public void Interact(PlayerInteraction playerInteraction);
+        public void Interact(PlayerInteractor playerInteractor);
         public void OnAnimationEvent();
         public void OnInteractionEnd();
         public string GetUIContext();

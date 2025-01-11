@@ -5,19 +5,25 @@ using UnityEngine;
 
 namespace Save
 {
+    /// <summary>
+    /// File Data를 읽어오는 클래스.
+    /// 1개의 File에 대해서만 지원한다. (확장 가능성)
+    /// </summary>
     public static class SaveManager
     {
         private static readonly string SaveFileDirectoryPath = $"{Application.persistentDataPath}/SaveData";
         private static readonly string SaveFilePath = $"{SaveFileDirectoryPath}/saveData.save";
 
+        private static SaveData _loadedSaveData;
+        
         public static bool IsLoadEnable()
         {
-            if (!File.Exists(SaveFilePath))
+            if (!Directory.Exists(SaveFileDirectoryPath))
             {
                 return false;
             }
             
-            if (!Directory.Exists(SaveFileDirectoryPath))
+            if (!File.Exists(SaveFilePath))
             {
                 return false;
             }
@@ -25,12 +31,16 @@ namespace Save
             return true;
         }
         
-        public static void Save(SaveData saveData)
+        /// <summary>
+        /// TODO: Serialize 과정에서 렉이 발생할 수 있다. 비동기를 사용하는 것을 고려.
+        /// </summary>
+        public static void Save(SaveData saveData, bool isClear = true)
         {
+            if(isClear)
+                Clear();
+            
             if (!Directory.Exists(SaveFileDirectoryPath))
-            {
                 Directory.CreateDirectory(SaveFileDirectoryPath);
-            }
             
             try
             {
@@ -45,12 +55,15 @@ namespace Save
                 throw;
             }
         }
-
+        
         public static SaveData Load()
         {
             Debug.Log(SaveFileDirectoryPath);
             
-            SaveData saveData;
+            if (IsAlreadyLoaded())
+            {
+                return _loadedSaveData;
+            }
             
             if (!IsLoadEnable())
             {
@@ -69,18 +82,30 @@ namespace Save
                     return default;
                 }
 
-                saveData = (SaveData)new BinaryFormatter().Deserialize(fileStream);
-
+                _loadedSaveData = (SaveData)new BinaryFormatter().Deserialize(fileStream);
                 fileStream.Close();
             }
             catch (Exception e)
             {
+                Clear();
                 Debug.LogError(SaveFileDirectoryPath);
                 Debug.LogError(e);
                 throw;
             }
 
-            return saveData;
+            return _loadedSaveData;
+        }
+
+        // public static SaveData LoadAsync()
+
+        private static bool IsAlreadyLoaded()
+        {
+            return _loadedSaveData != null;
+        }
+        
+        private static void Clear()
+        {
+            _loadedSaveData = null;
         }
     }
 }

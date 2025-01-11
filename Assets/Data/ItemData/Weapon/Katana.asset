@@ -1,0 +1,36 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c332a250c05a3b644bb4d08e3696ede1, type: 3}
+  m_Name: Katana
+  m_EditorClassIdentifier: 
+  id: 67f567ce-38f4-4429-b55e-5d59ba0364f5
+  itemName: "\uBB49\uB69D\uD55C \uCE74\uD0C0\uB098"
+  slotSprite: {fileID: 21300000, guid: f2a6caf7b6afd7b4095cfac985b5869c, type: 3}
+  itemDescription: "\uC0AC\uC6A9\uAC10\uC774 \uC9D9\uC740 \uCE74\uD0C0\uB098\uC774\uB2E4."
+  prefab: {fileID: 8511379120376378462, guid: 9105e9c0579a77746a0526664dc12a33, type: 3}
+  leftTranslationOffset: {x: 0, y: 0.1093587, z: 0.03158283}
+  leftRotationOffset: {x: 13.6398, y: 76.63359, z: -87.84448}
+  rightTranslationOffset: {x: 0, y: 0.1093575, z: 0.03158247}
+  rightRotationOffset: {x: -1.379773, y: -103.3664, z: 92.15553}
+  weaponType: 3
+  attackType: 0
+  staminaAmountUsed: 1.32
+  runtimeAnimatorController: {fileID: 22100000, guid: 589c4c8287c3de8438d4382450775950,
+    type: 2}
+  damage: 20
+  poiseDamage: 10
+  strengthWeight: 0.7
+  workmanshipWeight: 1.5
+  intellectWeight: 0
+  attackMotionSpeed: 1
+  weight: 5
+  isBare: 0

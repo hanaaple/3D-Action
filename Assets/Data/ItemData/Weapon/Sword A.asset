@@ -1,0 +1,36 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c332a250c05a3b644bb4d08e3696ede1, type: 3}
+  m_Name: Sword A
+  m_EditorClassIdentifier: 
+  id: b84df10e-935d-435a-b23b-ea4d90303034
+  itemName: "\uAE38\uCB49\uD55C \uB871\uC18C\uB4DC"
+  slotSprite: {fileID: 21300000, guid: 158be32ff2ccad14e8831bd617f89478, type: 3}
+  itemDescription: "\uB871\uC18C\uB4DC\uC784"
+  prefab: {fileID: 8511379120376378462, guid: 9105e9c0579a77746a0526664dc12a33, type: 3}
+  leftTranslationOffset: {x: 0, y: 0.1093587, z: 0.03158283}
+  leftRotationOffset: {x: 13.6398, y: 76.63359, z: -87.84448}
+  rightTranslationOffset: {x: 0, y: 0.1093575, z: 0.03158247}
+  rightRotationOffset: {x: -1.379773, y: -103.3664, z: 92.15553}
+  weaponType: 1
+  attackType: 0
+  staminaAmountUsed: 0.83
+  runtimeAnimatorController: {fileID: 22100000, guid: 589c4c8287c3de8438d4382450775950,
+    type: 2}
+  damage: 10
+  poiseDamage: 10
+  strengthWeight: 1
+  workmanshipWeight: 0.5
+  intellectWeight: 0
+  attackMotionSpeed: 1
+  weight: 10
+  isBare: 0

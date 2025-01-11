@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
+using Util;
 
 namespace Data.Static
 {
@@ -8,16 +9,26 @@ namespace Data.Static
     /// </summary>
     public class LevelUpTable
     {
-        public Dictionary<int, int> levelUpTable = new ();
+        // Level, RequiredExp per level
+        private readonly Dictionary<int, int> _levelUpTable = new ();
+        
+        public LevelUpTable(string csvText)
+        {
+            var list = CsvReader.ReadList<LevelUpData>(csvText);
+            foreach (var levelUpData in list)
+            {
+                _levelUpTable.TryAdd(levelUpData.Level, levelUpData.RequiredExp);
+            }
+        }
         
         public bool CanLevelUp(int level)
         {
-            return levelUpTable.ContainsKey(level);
+            return _levelUpTable.ContainsKey(level);
         }
 
         public int GetRequiredExp(int level)
         {
-            if(levelUpTable.TryGetValue(level, out int requiredLevel))
+            if(_levelUpTable.TryGetValue(level, out int requiredLevel))
             {
                 return requiredLevel;
             }
@@ -26,5 +37,12 @@ namespace Data.Static
 
             return -1;
         }
+
+    }
+
+    public class LevelUpData
+    {
+        public int Level;
+        public int RequiredExp;
     }
 }

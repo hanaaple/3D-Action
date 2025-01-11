@@ -1,0 +1,9 @@
+﻿property,constitution,spirit,strength,stamina
+attack,0,0,0,0
+maxHealthPoint,0,0,0,0
+maxManaPoint,0,0,0,0
+maxStaminaPoint,0,0,0,0
+maxEquipWeight,0,0,0,0
+maxPoiseWeight,0,0,0,0
+staminaRecoveryWeight,0,0,0,0
+poiseHealthRecoveryWeight,0,0,0,0
